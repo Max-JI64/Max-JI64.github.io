@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-13T02:09+09:00
+- Last updated: 2026-08-13T02:15+09:00
 - Purpose: GitHub Pages personal site for Max-JI64.github.io.
 - Important paths: `astro.config.mjs`, `src/content.config.ts`, `src/content/notes/`, `src/content/projects/`, `src/pages/`, `.github/workflows/deploy.yml`, `README.md`.
 
@@ -139,14 +139,21 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-13T02:09+09:00
+  - Updated: 2026-08-13T02:15+09:00
   - Current state: The final Home Hero uses a full-width Canvas data-node network: 75-135 nodes and 16-36 data streams on desktop, restored cool blue, white-blue, and contrast-point palette, with independent node-size bands of 32% large (2.7-4.1px), 15% small (1.15-1.55px), and 53% medium (1.65-2.65px); tablet/mobile use 60-90/10-20 and 36-60/6-12 respectively. The 35% upper limit applies only to large nodes. Initial nodes have staggered ages, but a regenerated node always starts at age zero and fades in for 1.2 seconds. Connections use both endpoint fades and an alpha of zero at the proximity threshold, so they appear and disappear smoothly. Data labels use English analytical terms only. Nodes and streams are uniformly random across the full Hero with no broad CSS mask or rectangular copy-avoidance zone; only a tight canvas-colored H1 text shadow protects the actual title glyph edges. Back-button BFCache restoration now remounts the lifecycle and generates a fresh random scene, confirmed by the user. The obsolete signal-stream component and its CSS were removed. The final component supports DPR resize, reduced motion, viewport pausing, and lifecycle cleanup. The site name is "Max.JI의 빅데이터 프로젝트 아카이브" across source text and metadata. The Home project heading and its "모든 프로젝트" link share one row, including on mobile. The main experience area and its `/experiences/` archive are labelled "경험 & 자격증" while retaining the existing `experiences` collection and routes. Text in titles and descriptions uses word-preserving Korean line breaks, start alignment, balanced headings, and prettier body wrapping to prevent mid-word splitting. Date semantics are fixed throughout the site: projects and experiences display only their period; learning notes display only their authored date in `YYYY년 MM월 DD일` form. Home and all archive pages currently show their empty states until a non-draft Markdown record is added. The carousels and detail routes activate automatically once content is published. Detail pages use a 1120px maximum content width.
   - Content state: All sample notes, projects, and experiences have been removed. Only `src/content/notes/TEMPLATE.md`, `src/content/projects/TEMPLATE.md`, and `src/content/experiences/TEMPLATE.md` remain; each is `draft: true` and therefore excluded from generated pages. Copy the relevant template, rename it, and change `draft` to `false` to publish.
   - SEO state: Each content schema accepts 0-8 accurate `keywords`, which are emitted only as matching JSON-LD semantic metadata rather than visible hashtags or `meta keywords`. `src/pages/sitemap.xml.ts` generates a sitemap from all non-draft content at build time, `public/robots.txt` advertises it, and `CONTENT_AUTHORING_GUIDE.md` documents authoring, AI keyword generation, and Google Search Console setup.
   - Next step: Add genuine Markdown records by copying the relevant collection template; no agent browser inspection was performed by request.
-  - Deployment state: The checked-in Astro workflow is correct in structure. The Jekyll GitHub Pages log confirms that the remote Pages publishing source is still branch-based; it must be changed to GitHub Actions at `https://github.com/Max-JI64/Max-JI64.github.io/settings/pages`. The workflow action versions are now `checkout@v6`, `setup-node@v5`, and `upload-pages-artifact@v4` to eliminate the Node 20 deprecation warnings after the next commit. Local Astro check and build pass. A local `npm ci --dry-run` could not finish in the sandbox after 60 seconds, so the exact remote install failure must be read from the failed Actions step if it recurs.
+  - Deployment state: GitHub Pages is now configured to use GitHub Actions. The remote failure was `npm ci` EUSAGE from package-lock inconsistency, reporting missing `@emnapi/core` and `@emnapi/runtime` entries. Running `npm install --package-lock-only` regenerated the needed lockfile metadata; the resulting `package-lock.json` change is currently uncommitted. The exact GitHub-equivalent `npm ci --dry-run`, Astro check, and static build now pass locally. Commit and push this lockfile change, then confirm the `Deploy Astro site to GitHub Pages` run completes.
 
 ## Session log
+
+- `session:20260813-0215`
+  - Started: 2026-08-13T02:09+09:00
+  - Last activity: 2026-08-13T02:15+09:00
+  - Focus: Resolve the GitHub Actions npm ci package-lock failure.
+  - Updated keys: `handoff:current`.
+  - Summary: Read the remote log and identified an out-of-sync package lock with missing emnapi packages. Regenerated lock metadata using npm install package-lock-only, then verified npm ci dry-run, Astro check, and the 5-page static build. Only package-lock.json remains to be committed and pushed.
 
 - `session:20260813-0209`
   - Started: 2026-08-13T02:00+09:00
