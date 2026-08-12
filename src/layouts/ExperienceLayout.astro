@@ -1,0 +1,36 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { entry, Content } = Astro.props;
+const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
+const period = `${formatMonth(entry.data.startedAt)} - ${entry.data.endedAt ? formatMonth(entry.data.endedAt) : "현재"}`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: entry.data.title,
+  description: entry.data.description,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  inLanguage: "ko-KR",
+  temporalCoverage: period,
+  author: { "@type": "Person", name: "Max.JI", url: "https://max-ji64.github.io/" },
+  keywords: entry.data.keywords.join(", ") || undefined,
+};
+---
+
+<BaseLayout title={`${entry.data.title} | Max.JI의 빅데이터 프로젝트 아카이브`} description={entry.data.description} structuredData={structuredData}>
+  <article class="content-page shell">
+    <header class="content-hero content-hero-card">
+      <a class="back-link" href="/experiences/">← 경험 &amp; 자격증</a>
+      <p class="content-category">{entry.data.kind}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="content-description">{entry.data.description}</p>
+      <dl class="project-facts">
+        <div><dt>기관 또는 활동</dt><dd>{entry.data.organization}</dd></div>
+        <div><dt>기간</dt><dd>{period}</dd></div>
+      </dl>
+      {entry.data.roles.length > 0 && <div class="tag-list">{entry.data.roles.map((role: string) => <span>{role}</span>)}</div>}
+    </header>
+    {entry.data.thumbnail && <img class="content-cover" src={entry.data.thumbnail} alt={`${entry.data.title} 대표 이미지`} />}
+    <div class="prose document-surface"><Content /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import ContentThumbnail from "../../components/ContentThumbnail.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const experiences = (await getCollection("experiences", ({ data }) => !data.draft)).sort(
+  (left, right) => right.data.startedAt.valueOf() - left.data.startedAt.valueOf(),
+);
+
+const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
+---
+
+<BaseLayout title="경험 & 자격증 | Max.JI의 빅데이터 프로젝트 아카이브" description="데이터 분석과 프로젝트 과정에서 쌓은 활동, 경험, 자격증을 기록합니다.">
+  <section class="shell archive-page" aria-labelledby="page-title">
+    <header class="page-intro"><p class="kicker">Experience &amp; Certificates</p><h1 id="page-title">경험 &amp; 자격증</h1><p>활동과 자격증의 이름보다 어떤 역할을 맡았고 무엇을 배웠는지 중심으로 기록합니다.</p></header>
+    {
+      experiences.length > 0 ? (
+        <div class="experience-list">
+          {experiences.map((experience) => (
+            <a href={`/experiences/${experience.id}/`}>
+              <ContentThumbnail src={experience.data.thumbnail} alt={`${experience.data.title} 대표 이미지`} label={experience.data.kind} className="experience-list-thumbnail" />
+              <div><p class="project-status">{experience.data.kind}</p><h2>{experience.data.title}</h2><p>{experience.data.description}</p></div>
+              <div class="experience-list-meta"><span>{experience.data.organization}</span><time datetime={experience.data.startedAt.toISOString()}>{formatMonth(experience.data.startedAt)} - {experience.data.endedAt ? formatMonth(experience.data.endedAt) : "현재"}</time><span aria-hidden="true">→</span></div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state"><code>src/content/experiences/</code>에 Markdown 파일을 추가하면 경험 및 자격증 목록이 이곳에 표시됩니다.</p>
+      )
+    }
+  </section>
+</BaseLayout>

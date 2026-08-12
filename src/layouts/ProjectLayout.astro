@@ -1,0 +1,41 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { entry, Content } = Astro.props;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: entry.data.title,
+  description: entry.data.description,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  inLanguage: "ko-KR",
+  temporalCoverage: entry.data.period,
+  author: { "@type": "Person", name: "Max.JI", url: "https://max-ji64.github.io/" },
+  keywords: entry.data.keywords.join(", ") || undefined,
+};
+---
+
+<BaseLayout title={`${entry.data.title} | Max.JI의 빅데이터 프로젝트 아카이브`} description={entry.data.description} structuredData={structuredData}>
+  <article class="content-page shell">
+    <header class="content-hero content-hero-card">
+      <a class="back-link" href="/projects/">← 프로젝트</a>
+      <p class="content-category">{entry.data.category}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="content-description">{entry.data.description}</p>
+      <dl class="project-facts">
+        <div><dt>기간</dt><dd>{entry.data.period}</dd></div>
+        <div><dt>역할</dt><dd>{entry.data.role}</dd></div>
+        <div><dt>결과</dt><dd>{entry.data.outcome}</dd></div>
+      </dl>
+      {entry.data.stack.length > 0 && <div class="tag-list">{entry.data.stack.map((item: string) => <span>{item}</span>)}</div>}
+      {(entry.data.repository || entry.data.demo) && (
+        <div class="action-row content-actions">
+          {entry.data.repository && <a class="button button-secondary" href={entry.data.repository} target="_blank" rel="noreferrer">Repository ↗</a>}
+          {entry.data.demo && <a class="button button-primary" href={entry.data.demo} target="_blank" rel="noreferrer">Demo 보기 ↗</a>}
+        </div>
+      )}
+    </header>
+    {entry.data.thumbnail && <img class="content-cover" src={entry.data.thumbnail} alt={`${entry.data.title} 대표 이미지`} />}
+    <div class="prose document-surface"><Content /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,96 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const sectionOrder = ["ADP", "Python", "SQL"] as const;
+const sectionDescriptions = {
+  ADP: "분석 문제를 이해하는 데 필요한 통계와 머신러닝 개념을 기록합니다.",
+  Python: "데이터를 정리하고 분석 코드로 옮기는 과정을 기록합니다.",
+  SQL: "데이터를 읽고 연결해 질문에 답하는 과정을 기록합니다.",
+};
+
+const notes = (await getCollection("notes", ({ data }) => !data.draft)).sort(
+  (left, right) => right.data.publishedAt.valueOf() - left.data.publishedAt.valueOf(),
+);
+
+const groups = sectionOrder.map((section) => ({
+  section,
+  entries: notes.filter((entry) => entry.data.section === section),
+}));
+
+const formatDate = (date: Date) => `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, "0")}월 ${String(date.getDate()).padStart(2, "0")}일`;
+---
+
+<BaseLayout title="학습 노트 | Max.JI의 빅데이터 프로젝트 아카이브" description="ADP, Python, SQL 학습 노트를 최신순으로 모아 둔 페이지입니다.">
+  <section class="shell archive-page" aria-labelledby="page-title">
+    <header class="page-intro"><p class="kicker">Notes</p><h1 id="page-title">학습 노트</h1><p>개념, 코드, 분석 판단을 나중에 다시 찾을 수 있도록 최신 기록부터 모아 둡니다.</p></header>
+    {
+      groups.map((group) => {
+        const carouselId = `note-carousel-${group.section.toLowerCase()}`;
+
+        return (
+          <section class="archive-group" id={group.section.toLowerCase()} aria-labelledby={`${group.section.toLowerCase()}-title`}>
+            <div class="archive-group-header">
+              <div><h2 id={`${group.section.toLowerCase()}-title`}>{group.section}</h2><p>{sectionDescriptions[group.section]}</p></div>
+              <div class="archive-group-controls"><span>{group.entries.length}개 기록</span>{group.entries.length > 3 && <button class="archive-view-all" type="button" data-note-toggle aria-controls={carouselId}>전체 보기</button>}</div>
+            </div>
+            {
+              group.entries.length > 0 ? (
+                <div class="note-carousel" id={carouselId} data-note-carousel>
+                  <div class="note-carousel-track" data-note-track tabindex="0" aria-label={`${group.section} 학습 노트 목록`}>
+                    {group.entries.map((entry) => (
+                      <a class="note-carousel-card" href={`/notes/${entry.id}/`}>
+                        <time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+                        <h3>{entry.data.title}</h3>
+                        <p>{entry.data.description}</p>
+                        <span class="text-link">읽기 <span aria-hidden="true">→</span></span>
+                      </a>
+                    ))}
+                  </div>
+                  {group.entries.length > 3 && <><span class="note-carousel-hover-zone note-carousel-hover-zone--left" aria-hidden="true"></span><span class="note-carousel-hover-zone note-carousel-hover-zone--right" aria-hidden="true"></span><div class="note-carousel-nav"><button class="note-carousel-button note-carousel-button--left" type="button" data-note-prev aria-label={`${group.section} 이전 노트`}>←</button><button class="note-carousel-button note-carousel-button--right" type="button" data-note-next aria-label={`${group.section} 다음 노트`}>→</button></div></>}
+                </div>
+              ) : (
+                <p class="empty-state"><code>src/content/notes/{group.section.toLowerCase()}/</code>에 Markdown 파일을 추가하면 이곳에 표시됩니다.</p>
+              )
+            }
+          </section>
+        );
+      })
+    }
+  </section>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-note-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>("[data-note-track]");
+    const previous = carousel.querySelector<HTMLButtonElement>("[data-note-prev]");
+    const next = carousel.querySelector<HTMLButtonElement>("[data-note-next]");
+    const toggle = carousel.parentElement?.querySelector<HTMLButtonElement>("[data-note-toggle]");
+
+    if (!track) return;
+
+    const updateControls = () => {
+      const endReached = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      if (previous) previous.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = endReached;
+    };
+
+    const scrollCards = (direction: number) => {
+      track.scrollBy({ left: direction * Math.max(track.clientWidth - 24, 260), behavior: "smooth" });
+    };
+
+    previous?.addEventListener("click", () => scrollCards(-1));
+    next?.addEventListener("click", () => scrollCards(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", () => requestAnimationFrame(updateControls));
+    toggle?.addEventListener("click", () => {
+      const expanded = carousel.classList.toggle("is-expanded");
+      toggle.textContent = expanded ? "접기" : "전체 보기";
+      track.scrollTo({ left: 0, behavior: "smooth" });
+      updateControls();
+    });
+
+    requestAnimationFrame(updateControls);
+    window.addEventListener("load", updateControls, { once: true });
+  });
+</script>

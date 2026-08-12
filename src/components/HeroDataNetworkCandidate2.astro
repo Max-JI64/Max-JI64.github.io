@@ -1,0 +1,362 @@
+<div class="hero-data-network" aria-hidden="true">
+  <canvas class="hero-data-network-canvas" data-hero-data-network></canvas>
+</div>
+
+<script>
+  type Rgb = readonly [number, number, number];
+
+  type NetworkNode = {
+    x: number;
+    y: number;
+    velocityX: number;
+    velocityY: number;
+    age: number;
+    lifespan: number;
+    radius: number;
+    alpha: number;
+    layer: number;
+    label: string | null;
+  };
+
+  type DataStream = {
+    x: number;
+    y: number;
+    velocityY: number;
+    driftX: number;
+    alpha: number;
+    label: string;
+  };
+
+  type PointerPosition = { x: number; y: number } | null;
+
+  const dataVocabulary = [
+    "0.913", "128.4", "64.1", "0.032", "SQL", "Python", "pandas", "NumPy",
+    "JSON", "CSV", "API", "ML", "rows=12842", "accuracy=.912", "loss=.031",
+    "NULL", "SELECT", "train", "predict", "x=0.82", "y=128", "id=1042", "p=.93",
+    "ETL", "EDA", "feature", "metrics", "insight", "forecast", "dashboard",
+    "regression", "clustering", "cohort", "segment", "warehouse", "streaming",
+  ];
+
+  const hexToRgb = (value: string): Rgb | null => {
+    const hex = value.trim().replace("#", "");
+    if (!/^[0-9a-f]{3}([0-9a-f]{3})?$/i.test(hex)) return null;
+    const normalized = hex.length === 3
+      ? hex.split("").map((character) => character + character).join("")
+      : hex;
+
+    return [
+      Number.parseInt(normalized.slice(0, 2), 16),
+      Number.parseInt(normalized.slice(2, 4), 16),
+      Number.parseInt(normalized.slice(4, 6), 16),
+    ];
+  };
+
+  const rgba = (color: Rgb, alpha: number) => `rgb(${color[0]} ${color[1]} ${color[2]} / ${alpha})`;
+  const randomBetween = (minimum: number, maximum: number) => minimum + Math.random() * (maximum - minimum);
+  const randomInteger = (minimum: number, maximum: number) => Math.floor(randomBetween(minimum, maximum + 1));
+
+  function randomItem<T>(items: readonly T[]) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  document.querySelectorAll<HTMLCanvasElement>("[data-hero-data-network]").forEach((canvas) => {
+    const scene = canvas.closest<HTMLElement>(".hero-scene");
+    const context = canvas.getContext("2d");
+    if (!scene || !context) return;
+
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compactQuery = window.matchMedia("(max-width: 820px)");
+    const mobileQuery = window.matchMedia("(max-width: 560px)");
+    let frameId = 0;
+    let lastTimestamp = performance.now();
+    let isVisible = true;
+    let width = 0;
+    let height = 0;
+    let devicePixelRatio = 1;
+    let nodes: NetworkNode[] = [];
+    let streams: DataStream[] = [];
+    let pointer: PointerPosition = null;
+    let lastDensityKey = "";
+    let isMounted = false;
+
+    const getDensity = () => {
+      if (mobileQuery.matches) return { key: "mobile", nodeCount: randomInteger(36, 60), streamCount: randomInteger(6, 12) };
+      if (compactQuery.matches) return { key: "tablet", nodeCount: randomInteger(60, 90), streamCount: randomInteger(10, 20) };
+      return { key: "desktop", nodeCount: randomInteger(75, 135), streamCount: randomInteger(16, 36) };
+    };
+
+    const createNode = (initial = false): NetworkNode => {
+      const layer = randomInteger(0, 2);
+      const speed = randomBetween(4, 20) * [0.55, 0.88, 1.1][layer];
+      const direction = randomBetween(0, Math.PI * 2);
+      const lifespan = randomBetween(6, 26);
+      const sizeRoll = Math.random();
+      const largeNode = sizeRoll < 0.32;
+      const smallNode = !largeNode && sizeRoll < 0.47;
+      return {
+        x: randomBetween(0, width),
+        y: randomBetween(0, height),
+        velocityX: Math.cos(direction) * speed,
+        velocityY: Math.sin(direction) * speed,
+        age: initial ? randomBetween(0, lifespan * 0.75) : 0,
+        lifespan,
+        radius: largeNode
+          ? randomBetween(2.7, 4.1)
+          : smallNode
+            ? randomBetween(1.15, 1.55)
+            : randomBetween(1.65, 2.65),
+        alpha: randomBetween(0.22, 0.36) + (layer === 2 ? 0.1 : 0),
+        layer,
+        label: !mobileQuery.matches && Math.random() < 0.08 ? randomItem(dataVocabulary) : null,
+      };
+    };
+
+    const createStream = (startAboveHero = false): DataStream => {
+      return {
+        x: randomBetween(0, width),
+        y: startAboveHero ? randomBetween(-height, 0) : randomBetween(0, height),
+        velocityY: randomBetween(5.5, 18),
+        driftX: randomBetween(-4, 4),
+        alpha: randomBetween(0.14, 0.25),
+        label: randomItem(dataVocabulary),
+      };
+    };
+
+    const createScene = () => {
+      const density = getDensity();
+      lastDensityKey = density.key;
+      nodes = Array.from({ length: density.nodeCount }, () => createNode(true));
+      streams = Array.from({ length: density.streamCount }, () => createStream(true));
+    };
+
+    const updateNodes = (elapsed: number) => {
+      for (const node of nodes) {
+        node.age += elapsed;
+        if (node.age >= node.lifespan) {
+          Object.assign(node, createNode());
+          continue;
+        }
+
+        node.x += node.velocityX * elapsed;
+        node.y += node.velocityY * elapsed;
+
+        if (!mobileQuery.matches && pointer) {
+          const deltaX = node.x - pointer.x;
+          const deltaY = node.y - pointer.y;
+          const distance = Math.hypot(deltaX, deltaY);
+          if (distance > 1 && distance < 118) {
+            const influence = (1 - distance / 118) * 9 * elapsed;
+            node.x += (deltaX / distance) * influence;
+            node.y += (deltaY / distance) * influence;
+          }
+        }
+
+        if (node.x < -8 || node.x > width + 8) node.velocityX *= -1;
+        if (node.y < -8 || node.y > height + 8) node.velocityY *= -1;
+        node.x = Math.max(-8, Math.min(width + 8, node.x));
+        node.y = Math.max(-8, Math.min(height + 8, node.y));
+      }
+    };
+
+    const updateStreams = (elapsed: number) => {
+      for (const stream of streams) {
+        stream.x += stream.driftX * elapsed;
+        stream.y += stream.velocityY * elapsed;
+        if (stream.y > height + 24 || stream.x < -90 || stream.x > width + 90) {
+          Object.assign(stream, createStream(true));
+        }
+      }
+    };
+
+    const drawConnections = (accent: Rgb) => {
+      const connectionDistance = compactQuery.matches ? 105 : 128;
+      context.save();
+      context.lineWidth = 1.25;
+
+      for (let leftIndex = 0; leftIndex < nodes.length; leftIndex += 1) {
+        const left = nodes[leftIndex];
+        for (let rightIndex = leftIndex + 1; rightIndex < nodes.length; rightIndex += 1) {
+          const right = nodes[rightIndex];
+          const distance = Math.hypot(left.x - right.x, left.y - right.y);
+          if (distance >= connectionDistance) continue;
+
+          const proximity = 1 - distance / connectionDistance;
+          const leftFade = Math.min(1, left.age / 1.2, (left.lifespan - left.age) / 1.2);
+          const rightFade = Math.min(1, right.age / 1.2, (right.lifespan - right.age) / 1.2);
+          const lifecycleFade = Math.max(0, Math.min(leftFade, rightFade));
+          const pointerBoost = pointer && !mobileQuery.matches
+            ? Math.max(0, 1 - Math.hypot((left.x + right.x) / 2 - pointer.x, (left.y + right.y) / 2 - pointer.y) / 180) * 0.05
+            : 0;
+          const connectionAlpha = Math.min(0.25, proximity * (0.1 + proximity * 0.31 + pointerBoost));
+          context.strokeStyle = rgba(accent, connectionAlpha * lifecycleFade);
+          context.beginPath();
+          context.moveTo(left.x, left.y);
+          context.lineTo(right.x, right.y);
+          context.stroke();
+        }
+      }
+      context.restore();
+    };
+
+    const drawNodes = (signalBlue: Rgb, iceBlue: Rgb, contrastPoint: Rgb) => {
+      context.save();
+      context.font = "11px SFMono-Regular, Consolas, monospace";
+      for (const node of nodes) {
+        const color = node.layer === 0 ? signalBlue : node.layer === 1 ? iceBlue : contrastPoint;
+        const lifecycleFade = Math.min(1, node.age / 1.2, (node.lifespan - node.age) / 1.2);
+        const alpha = Math.min(node.layer === 2 ? 0.58 : 0.5, node.alpha + 0.08) * lifecycleFade;
+        context.fillStyle = rgba(color, alpha);
+        context.beginPath();
+        context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        context.fill();
+
+        if (node.label) {
+          context.fillStyle = rgba(color, alpha * 0.84);
+          context.fillText(node.label, node.x + 7, node.y - 7);
+        }
+      }
+      context.restore();
+    };
+
+    const drawStreams = (accent: Rgb, blueGray: Rgb) => {
+      context.save();
+      context.font = "11px SFMono-Regular, Consolas, monospace";
+      for (const stream of streams) {
+        const color = stream.label === "SQL" || stream.label === "Python" || stream.label === "ML" ? accent : blueGray;
+        const fade = Math.min(1, Math.max(0, stream.y / 46), Math.max(0, (height - stream.y) / 58));
+        context.fillStyle = rgba(color, stream.alpha * fade);
+        context.fillText(stream.label, stream.x, stream.y);
+      }
+      context.restore();
+    };
+
+    const draw = (timestamp: number, advance = false) => {
+      if (!width || !height) return;
+      if (advance) {
+        const elapsed = Math.min((timestamp - lastTimestamp) / 1000, 0.06);
+        updateNodes(elapsed);
+        updateStreams(elapsed);
+      }
+      lastTimestamp = timestamp;
+
+      const style = getComputedStyle(scene);
+      const accent = hexToRgb(style.getPropertyValue("--accent")) ?? [121, 164, 255];
+      const blueGray: Rgb = [132, 171, 240];
+      const softWhite: Rgb = [218, 231, 255];
+      const contrastPoint: Rgb = [79, 215, 255];
+      context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+      context.clearRect(0, 0, width, height);
+      drawConnections(accent);
+      drawStreams(accent, blueGray);
+      drawNodes(blueGray, softWhite, contrastPoint);
+    };
+
+    const stop = () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      frameId = 0;
+    };
+
+    const animate = (timestamp: number) => {
+      if (!isVisible || reducedMotionQuery.matches || document.hidden) return;
+      draw(timestamp, true);
+      frameId = requestAnimationFrame(animate);
+    };
+
+    const start = () => {
+      stop();
+      draw(performance.now());
+      if (!reducedMotionQuery.matches && isVisible && !document.hidden) frameId = requestAnimationFrame(animate);
+    };
+
+    const resize = () => {
+      const previousWidth = width;
+      const previousHeight = height;
+      const bounds = scene.getBoundingClientRect();
+      width = Math.max(1, Math.round(bounds.width));
+      height = Math.max(1, Math.round(bounds.height));
+      devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * devicePixelRatio);
+      canvas.height = Math.round(height * devicePixelRatio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      const densityKey = mobileQuery.matches ? "mobile" : compactQuery.matches ? "tablet" : "desktop";
+      if (!nodes.length || densityKey !== lastDensityKey) {
+        createScene();
+      } else if (previousWidth && previousHeight) {
+        for (const node of nodes) {
+          node.x = (node.x / previousWidth) * width;
+          node.y = (node.y / previousHeight) * height;
+        }
+      }
+      draw(performance.now());
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) start();
+      else stop();
+    }, { threshold: 0.05 });
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (mobileQuery.matches) return;
+      const bounds = scene.getBoundingClientRect();
+      pointer = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    };
+    const handlePointerLeave = () => { pointer = null; };
+    const handleMotionChange = () => start();
+    const handleDensityChange = () => {
+      lastDensityKey = "";
+      resize();
+      start();
+    };
+    const handleVisibilityChange = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
+    const mount = () => {
+      if (isMounted) return;
+      isMounted = true;
+      scene.addEventListener("pointermove", handlePointerMove, { passive: true });
+      scene.addEventListener("pointerleave", handlePointerLeave, { passive: true });
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      reducedMotionQuery.addEventListener("change", handleMotionChange);
+      compactQuery.addEventListener("change", handleDensityChange);
+      mobileQuery.addEventListener("change", handleDensityChange);
+      resizeObserver.observe(scene);
+      intersectionObserver.observe(scene);
+      resize();
+      start();
+    };
+
+    const unmount = () => {
+      if (!isMounted) return;
+      isMounted = false;
+      stop();
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      scene.removeEventListener("pointermove", handlePointerMove);
+      scene.removeEventListener("pointerleave", handlePointerLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      reducedMotionQuery.removeEventListener("change", handleMotionChange);
+      compactQuery.removeEventListener("change", handleDensityChange);
+      mobileQuery.removeEventListener("change", handleDensityChange);
+    };
+
+    const handlePageShow = () => {
+      if (isMounted) return;
+      pointer = null;
+      nodes = [];
+      streams = [];
+      lastDensityKey = "";
+      lastTimestamp = performance.now();
+      mount();
+    };
+
+    window.addEventListener("pagehide", unmount);
+    window.addEventListener("pageshow", handlePageShow);
+    mount();
+  });
+</script>

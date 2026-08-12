@@ -1,0 +1,23 @@
+{
+  "name": "max-ji64-github-io",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Max.JI의 빅데이터 프로젝트 아카이브",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "astro": "^7.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

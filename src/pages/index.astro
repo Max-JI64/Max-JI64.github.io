@@ -1,0 +1,215 @@
+---
+import { getCollection } from "astro:content";
+import ContentThumbnail from "../components/ContentThumbnail.astro";
+import HeroDataNetworkCandidate2 from "../components/HeroDataNetworkCandidate2.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sortByPublishedAt = <T extends { data: { publishedAt: Date } }>(entries: T[]) =>
+  [...entries].sort((left, right) => right.data.publishedAt.valueOf() - left.data.publishedAt.valueOf());
+
+const notes = sortByPublishedAt(await getCollection("notes", ({ data }) => !data.draft));
+const projects = sortByPublishedAt(await getCollection("projects", ({ data }) => !data.draft));
+const experiences = [...await getCollection("experiences", ({ data }) => !data.draft)].sort(
+  (left, right) => right.data.startedAt.valueOf() - left.data.startedAt.valueOf(),
+);
+const latestNote = notes[0];
+const featuredProject = projects.find((entry) => entry.data.featured);
+const highlightedProject = featuredProject ?? projects[0];
+const highlightedProjectLabel = featuredProject ? "대표 프로젝트" : "최근 프로젝트";
+const supportingProjects = projects.filter((entry) => entry.id !== highlightedProject?.id);
+
+const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
+const formatDate = (date: Date) => `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, "0")}월 ${String(date.getDate()).padStart(2, "0")}일`;
+const formatExperiencePeriod = (startedAt: Date, endedAt?: Date) => `${formatMonth(startedAt)} - ${endedAt ? formatMonth(endedAt) : "현재"}`;
+---
+
+<BaseLayout
+  title="Max.JI의 빅데이터 프로젝트 아카이브"
+  description="ADP, Python, SQL 학습 노트와 데이터 프로젝트의 과정 및 판단을 정리하는 개인 아카이브입니다."
+>
+  <section class="hero-scene" aria-labelledby="hero-title">
+    <HeroDataNetworkCandidate2 />
+    <div class="shell hero">
+      <div class="hero-copy">
+        <p class="kicker">Learning archive and project record</p>
+        <h1 id="hero-title">데이터를 배우고,<br />분석하고,<br /><span>기록합니다.</span></h1>
+        <p class="hero-description">ADP, Python, SQL 학습 노트와 데이터 프로젝트의 과정 및 판단을 정리하는 개인 아카이브입니다.</p>
+        <div class="action-row">
+          <a class="button button-primary" href="/notes/">학습 노트 보기</a>
+          <a class="button button-secondary" href="/projects/">프로젝트 보기</a>
+        </div>
+      </div>
+
+      <section class="latest-note-area" aria-labelledby="latest-note-heading">
+        <h2 id="latest-note-heading">최근 작성 노트</h2>
+        {
+          latestNote ? (
+            <a class="latest-note-preview" href={`/notes/${latestNote.id}/`} aria-label={`최근 작성 노트: ${latestNote.data.title}`}>
+              <div class="latest-note-copy"><p class="latest-note-topic">{latestNote.data.section}</p><h3>{latestNote.data.title}</h3><p>{latestNote.data.description}</p><time class="content-card-date" datetime={latestNote.data.publishedAt.toISOString()}>{formatDate(latestNote.data.publishedAt)}</time><span class="text-link">노트 읽기 <span aria-hidden="true">→</span></span></div>
+            </a>
+          ) : (
+            <div class="latest-note-preview latest-note-empty" aria-label="최근 작성 노트 없음"><h3>첫 기록을<br />작성해 보세요.</h3><p>Markdown 노트를 추가하면 이 자리에 자동으로 표시됩니다.</p><a class="text-link" href="/notes/">노트 작성 방법 <span aria-hidden="true">→</span></a></div>
+          )
+        }
+      </section>
+    </div>
+  </section>
+
+  <section class="section section-border" aria-labelledby="projects-title">
+    <div class="shell">
+      <div class="section-heading project-section-heading">
+        <h2 id="projects-title">프로젝트</h2>
+        <a class="text-link" href="/projects/">모든 프로젝트 <span aria-hidden="true">→</span></a>
+      </div>
+      {
+        highlightedProject ? (
+          <a class="project-feature" href={`/projects/${highlightedProject.id}/`}>
+            <ContentThumbnail src={highlightedProject.data.thumbnail} alt={`${highlightedProject.data.title} 대표 이미지`} label={highlightedProject.data.category} className="project-feature-thumbnail" />
+            <div class="project-copy">
+              <p class="project-status">{highlightedProjectLabel}</p>
+              <h3>{highlightedProject.data.title}</h3>
+              <p>{highlightedProject.data.description}</p>
+              <div class="project-meta"><span><strong>역할</strong> {highlightedProject.data.role}</span><time><strong>기간</strong> {highlightedProject.data.period}</time></div>
+            </div>
+          </a>
+        ) : (
+          <p class="empty-state">아직 프로젝트가 없습니다. <code>src/content/projects/</code>에 Markdown 파일을 추가해 보세요.</p>
+        )
+      }
+      {
+        supportingProjects.length > 0 && (
+          <div class="home-project-carousel" data-home-project-carousel>
+            <div class="project-row" data-home-project-track>
+              {supportingProjects.map((project) => (
+                <a class="project-card" href={`/projects/${project.id}/`}>
+                  <ContentThumbnail src={project.data.thumbnail} alt={`${project.data.title} 대표 이미지`} label={project.data.category} className="project-card-thumbnail" />
+                  <div><small>{project.data.category}</small><h3>{project.data.title}</h3><p>{project.data.description}</p><time class="content-card-date">기간 {project.data.period}</time></div>
+                  <span class="text-link">기록 보기 <span aria-hidden="true">→</span></span>
+                </a>
+              ))}
+            </div>
+            {supportingProjects.length > 2 && <><span class="carousel-hover-zone carousel-hover-zone--left" aria-hidden="true"></span><span class="carousel-hover-zone carousel-hover-zone--right" aria-hidden="true"></span><button class="carousel-overlay-arrow carousel-overlay-arrow--left" type="button" data-home-project-prev aria-label="이전 프로젝트">←</button><button class="carousel-overlay-arrow carousel-overlay-arrow--right" type="button" data-home-project-next aria-label="다음 프로젝트">→</button></>}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section section-border" aria-label="경험 및 자격증과 학습 노트">
+    <div class="shell experience-notes-grid">
+      <section aria-labelledby="experience-title">
+        <div class="record-heading"><h2 id="experience-title">경험 &amp; 자격증</h2><a class="text-link" href="/experiences/">전체 보기 <span aria-hidden="true">→</span></a></div>
+        {
+          experiences.length > 0 ? (
+            <div class="home-experience-carousel" data-home-experience-carousel>
+              <div class="home-experience-grid" data-home-experience-track>
+              {experiences.map((experience) => (
+                <a class="experience-card" href={`/experiences/${experience.id}/`}>
+                  <ContentThumbnail src={experience.data.thumbnail} alt={`${experience.data.title} 대표 이미지`} label={experience.data.kind} className="experience-card-thumbnail" />
+                  <span class="experience-card-copy"><strong>{experience.data.title}</strong><small>{experience.data.organization} · {experience.data.kind}</small><time datetime={experience.data.startedAt.toISOString()}>{formatExperiencePeriod(experience.data.startedAt, experience.data.endedAt)}</time></span>
+                </a>
+              ))}
+              </div>
+              <span class="carousel-hover-zone carousel-hover-zone--left" aria-hidden="true"></span><span class="carousel-hover-zone carousel-hover-zone--right" aria-hidden="true"></span><button class="carousel-overlay-arrow carousel-overlay-arrow--left" type="button" data-home-experience-prev aria-label="이전 경험">←</button><button class="carousel-overlay-arrow carousel-overlay-arrow--right" type="button" data-home-experience-next aria-label="다음 경험">→</button>
+            </div>
+          ) : (
+            <p class="empty-state"><code>src/content/experiences/</code>에 활동, 인턴, 교육 경험을 Markdown으로 추가할 수 있습니다.</p>
+          )
+        }
+      </section>
+
+      <section aria-labelledby="learning-title">
+        <div class="record-heading"><h2 id="learning-title">학습 노트</h2><a class="text-link" href="/notes/">전체 보기 <span aria-hidden="true">→</span></a></div>
+        <div class="home-note-carousel" data-home-note-carousel>
+          <div class="home-note-list" data-home-note-track>
+          {notes.map((note) => (
+            <a href={`/notes/${note.id}/`}>
+              <span class="home-note-section">{note.data.section}</span>
+              <span><strong>{note.data.title}</strong><small>{note.data.description}</small></span>
+              <time datetime={note.data.publishedAt.toISOString()}>{formatDate(note.data.publishedAt)}</time>
+            </a>
+          ))}
+          </div>
+          <button class="carousel-overlay-arrow carousel-overlay-arrow--up" type="button" data-home-note-prev aria-label="이전 학습 노트">↑</button><button class="carousel-overlay-arrow carousel-overlay-arrow--down" type="button" data-home-note-next aria-label="다음 학습 노트">↓</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-home-project-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>("[data-home-project-track]");
+    const previous = carousel.querySelector<HTMLButtonElement>("[data-home-project-prev]");
+    const next = carousel.querySelector<HTMLButtonElement>("[data-home-project-next]");
+
+    if (!track) return;
+
+    const updateControls = () => {
+      const endReached = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      if (previous) previous.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = endReached;
+    };
+
+    const scrollProjects = (direction: number) => {
+      track.scrollBy({ left: direction * Math.max(track.clientWidth - 24, 260), behavior: "smooth" });
+    };
+
+    previous?.addEventListener("click", () => scrollProjects(-1));
+    next?.addEventListener("click", () => scrollProjects(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    updateControls();
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-home-experience-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>("[data-home-experience-track]");
+    const previous = carousel.querySelector<HTMLButtonElement>("[data-home-experience-prev]");
+    const next = carousel.querySelector<HTMLButtonElement>("[data-home-experience-next]");
+
+    if (!track) return;
+
+    const updateControls = () => {
+      const endReached = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      if (previous) previous.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = endReached;
+    };
+
+    const scrollExperiences = (direction: number) => {
+      track.scrollBy({ left: direction * Math.max(track.clientWidth - 24, 260), behavior: "smooth" });
+    };
+
+    previous?.addEventListener("click", () => scrollExperiences(-1));
+    next?.addEventListener("click", () => scrollExperiences(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    updateControls();
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-home-note-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>("[data-home-note-track]");
+    const previous = carousel.querySelector<HTMLButtonElement>("[data-home-note-prev]");
+    const next = carousel.querySelector<HTMLButtonElement>("[data-home-note-next]");
+
+    if (!track) return;
+
+    const updateControls = () => {
+      const endReached = track.scrollTop + track.clientHeight >= track.scrollHeight - 2;
+      if (previous) previous.disabled = track.scrollTop <= 2;
+      if (next) next.disabled = endReached;
+    };
+
+    const scrollNotes = (direction: number) => {
+      const firstNote = track.querySelector<HTMLElement>("a");
+      const step = firstNote?.offsetHeight ?? 92;
+      track.scrollBy({ top: direction * step, behavior: "smooth" });
+    };
+
+    previous?.addEventListener("click", () => scrollNotes(-1));
+    next?.addEventListener("click", () => scrollNotes(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    updateControls();
+  });
+</script>
