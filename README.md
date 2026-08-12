@@ -115,4 +115,11 @@ draft: false
 
 ## 배포
 
-`main` 브랜치에 push하면 `.github/workflows/deploy.yml`이 Astro 정적 사이트를 빌드해 GitHub Pages에 배포합니다. GitHub 저장소의 **Settings > Pages > Build and deployment**에서 Source를 **GitHub Actions**로 한 번 설정해야 합니다.
+`main` 브랜치에 push하면 `.github/workflows/deploy.yml`이 Astro 정적 사이트를 빌드해 GitHub Pages에 배포합니다.
+
+1. [GitHub Pages 설정](https://github.com/Max-JI64/Max-JI64.github.io/settings/pages)을 엽니다. 상단에 `Settings` 탭이 보이지 않으면 메뉴 드롭다운에서 `Settings`를 선택합니다.
+2. 왼쪽 사이드바의 **Code and automation > Pages**를 선택합니다.
+3. **Build and deployment > Source**를 **GitHub Actions**로 변경합니다.
+4. 다음 push 뒤 [Actions](https://github.com/Max-JI64/Max-JI64.github.io/actions)의 `Deploy Astro site to GitHub Pages` 실행이 초록색 완료인지 확인합니다.
+
+`Jekyll` 로그가 보이면 아직 브랜치 기반 배포가 선택된 것입니다. **GitHub Actions**로 바꾼 뒤 다시 push하거나 Actions 화면에서 `Run workflow`를 실행합니다.
