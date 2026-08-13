@@ -8,7 +8,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 ---
 
-<NoteLayout entry={entry} Content={Content} />
+<NoteLayout entry={entry} Content={Content} headings={headings} />

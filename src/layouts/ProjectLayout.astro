@@ -1,7 +1,13 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import ContentToc from "../components/ContentToc.astro";
 
-const { entry, Content } = Astro.props;
+const { entry, Content, headings = [] } = Astro.props;
+const hasHeroImage = Boolean(entry.data.heroImage);
+const isWeatherProject = entry.id === "2026-weather-big-data-contest";
+const tocHeadings = isWeatherProject
+  ? headings.filter((heading: { depth: number }) => heading.depth === 2)
+  : [];
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
@@ -16,26 +22,36 @@ const structuredData = {
 ---
 
 <BaseLayout title={`${entry.data.title} | Max.JI의 빅데이터 프로젝트 아카이브`} description={entry.data.description} structuredData={structuredData}>
-  <article class="content-page shell">
-    <header class="content-hero content-hero-card">
-      <a class="back-link" href="/projects/">← 프로젝트</a>
-      <p class="content-category">{entry.data.category}</p>
-      <h1>{entry.data.title}</h1>
-      <p class="content-description">{entry.data.description}</p>
-      <dl class="project-facts">
-        <div><dt>기간</dt><dd>{entry.data.period}</dd></div>
-        <div><dt>역할</dt><dd>{entry.data.role}</dd></div>
-        <div><dt>결과</dt><dd>{entry.data.outcome}</dd></div>
-      </dl>
-      {entry.data.stack.length > 0 && <div class="tag-list">{entry.data.stack.map((item: string) => <span>{item}</span>)}</div>}
-      {(entry.data.repository || entry.data.demo) && (
-        <div class="action-row content-actions">
-          {entry.data.repository && <a class="button button-secondary" href={entry.data.repository} target="_blank" rel="noreferrer">Repository ↗</a>}
-          {entry.data.demo && <a class="button button-primary" href={entry.data.demo} target="_blank" rel="noreferrer">Demo 보기 ↗</a>}
-        </div>
+  <article id="content-top" class:list={["content-page", "shell", { "weather-project-page": isWeatherProject, "has-content-toc": tocHeadings.length > 0 }]}>
+    <header class:list={["content-hero", "content-hero-card", { "project-hero-with-media": hasHeroImage }]}>
+      <div class="project-hero-copy">
+        <a class="back-link" href="/projects/">← 프로젝트</a>
+        {entry.data.category && <p class="content-category">{entry.data.category}</p>}
+        <h1>{entry.data.title}</h1>
+        {entry.data.description && <p class="content-description">{entry.data.description}</p>}
+        <dl class="project-facts">
+          <div><dt>기간</dt><dd>{entry.data.period}</dd></div>
+          {entry.data.role && <div><dt>역할</dt><dd>{entry.data.role}</dd></div>}
+          {entry.data.award && <div><dt>수상</dt><dd>{entry.data.award}</dd></div>}
+        </dl>
+        {entry.data.stack.length > 0 && <div class="tag-list">{entry.data.stack.map((item: string) => <span>{item}</span>)}</div>}
+        {(entry.data.repository || entry.data.demo) && (
+          <div class="action-row content-actions">
+            {entry.data.repository && <a class="button button-secondary" href={entry.data.repository} target="_blank" rel="noreferrer">Repository ↗</a>}
+            {entry.data.demo && <a class="button button-primary" href={entry.data.demo} target="_blank" rel="noreferrer">Demo 보기 ↗</a>}
+          </div>
+        )}
+      </div>
+      {entry.data.heroImage && (
+        <figure class="project-hero-media">
+          <img src={entry.data.heroImage} alt={entry.data.heroImageAlt || `${entry.data.title} 대표 이미지`} width="3508" height="4961" fetchpriority="high" />
+        </figure>
       )}
     </header>
-    {entry.data.thumbnail && <img class="content-cover" src={entry.data.thumbnail} alt={`${entry.data.title} 대표 이미지`} />}
-    <div class="prose document-surface"><Content /></div>
+    {entry.data.thumbnail && !hasHeroImage && <img class="content-cover" src={entry.data.thumbnail} alt={`${entry.data.title} 대표 이미지`} />}
+    <div class:list={["content-body-shell", { "content-body-shell-with-toc": tocHeadings.length > 0 }]}>
+      <ContentToc headings={tocHeadings} />
+      <div class="prose document-surface"><Content /></div>
+    </div>
   </article>
 </BaseLayout>

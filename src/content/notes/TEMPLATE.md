@@ -2,7 +2,7 @@
 title: "학습 노트 제목"
 description: "이 노트에서 정리할 핵심 개념과 판단 기준을 한두 문장으로 작성합니다."
 publishedAt: 2026-01-01
-section: "ADP"
+# updatedAt: 2026-01-01 # 기존 글을 수정했을 때만 실제 수정일로 추가합니다.
 keywords: ["회귀분석", "결정계수", "선형 회귀"]
 draft: true
 ---

@@ -3,6 +3,8 @@ title: "경험 또는 자격증 제목"
 description: "활동의 목적과 맡은 역할을 한두 문장으로 작성합니다."
 organization: "기관 또는 주관처"
 kind: "경험"
+publishedAt: 2026-01-01
+# updatedAt: 2026-01-01 # 기존 글을 수정했을 때만 실제 수정일로 추가합니다.
 startedAt: 2026-01-01
 endedAt: 2026-02-01
 roles: ["역할 또는 키워드"]

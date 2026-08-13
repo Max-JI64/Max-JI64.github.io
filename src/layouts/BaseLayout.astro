@@ -28,7 +28,11 @@ const structuredDataJson = structuredData
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta name="theme-color" content="#f6f7f9" />
+    <meta name="theme-color" content="#11151c" />
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+    </script>
     {structuredDataJson && <script is:inline type="application/ld+json" set:html={structuredDataJson} />}
     <title>{title}</title>
   </head>

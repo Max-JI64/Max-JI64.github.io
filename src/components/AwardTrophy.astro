@@ -1,0 +1,12 @@
+---
+interface Props {
+  award: string;
+  variant?: "featured" | "card" | "tile";
+}
+
+const { award, variant = "card" } = Astro.props;
+---
+
+<aside class:list={["award-trophy", `award-trophy--${variant}`]} aria-label={`${award} 수상`}>
+  <img src="/images/projects/award-trophy.png" alt="" aria-hidden="true" loading="lazy" />
+</aside>

@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...staticPaths.map((path) => ({ path, lastmod: undefined as Date | undefined })),
     ...notes.map((entry) => ({ path: `/notes/${entry.id}/`, lastmod: entry.data.updatedAt ?? entry.data.publishedAt })),
     ...projects.map((entry) => ({ path: `/projects/${entry.id}/`, lastmod: entry.data.updatedAt ?? entry.data.publishedAt })),
-    ...experiences.map((entry) => ({ path: `/experiences/${entry.id}/`, lastmod: entry.data.endedAt ?? entry.data.startedAt })),
+    ...experiences.map((entry) => ({ path: `/experiences/${entry.id}/`, lastmod: entry.data.updatedAt ?? entry.data.publishedAt })),
   ];
   const urls = pages.map(({ path, lastmod }) => `<url><loc>${escapeXml(new URL(path, baseUrl).href)}</loc>${lastmod ? `<lastmod>${toDate(lastmod)}</lastmod>` : ""}</url>`).join("");
 

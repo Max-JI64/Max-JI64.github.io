@@ -1,0 +1,72 @@
+---
+interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+const { headings = [] } = Astro.props as { headings?: TocHeading[] };
+---
+
+{headings.length > 0 && (
+  <aside class="content-toc" aria-labelledby="content-toc-title" data-content-toc>
+    <strong id="content-toc-title" class="content-toc-title">목차</strong>
+    <nav aria-label="문서 목차">
+      {headings.map((heading, index) => (
+        <a
+          class="content-toc-link"
+          href={`#${heading.slug}`}
+          aria-current={index === 0 ? "location" : undefined}
+          data-content-toc-link
+        >
+          {heading.text}
+        </a>
+      ))}
+    </nav>
+    <a class="content-toc-top" href="#content-top">맨 위로</a>
+  </aside>
+)}
+
+<script>
+  const initializeContentToc = (toc: HTMLElement) => {
+    if (toc.dataset.initialized === "true") return;
+    toc.dataset.initialized = "true";
+
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-content-toc-link]"));
+    const sections = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    const setActiveLink = (id: string) => {
+      links.forEach((link) => {
+        if (decodeURIComponent(link.hash.slice(1)) === id) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const updateActiveLink = () => {
+      const readingLine = window.innerHeight * 0.28;
+      let activeSection = sections[0];
+
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= readingLine) activeSection = section;
+      });
+
+      if (activeSection) setActiveLink(activeSection.id);
+    };
+
+    const observer = new IntersectionObserver(updateActiveLink, {
+      rootMargin: "-20% 0px -70% 0px",
+      threshold: [0, 1],
+    });
+
+    sections.forEach((section) => observer.observe(section));
+    links.forEach((link) => link.addEventListener("click", () => setActiveLink(decodeURIComponent(link.hash.slice(1)))));
+    updateActiveLink();
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-content-toc]").forEach(initializeContentToc);
+</script>

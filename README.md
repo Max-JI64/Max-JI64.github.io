@@ -19,18 +19,11 @@ npm run build
 
 ## 학습 노트 추가
 
-`src/content/notes/` 아래의 알맞은 주제 폴더에 Markdown 파일을 추가합니다.
+`src/content/notes/` 아래에 Markdown 파일을 추가합니다.
 
 ```text
 src/content/notes/
-├── adp/
-│   ├── regression/
-│   ├── machine-learning/
-│   └── statistics/
-├── python/
-│   ├── pandas/
-│   └── data-preprocessing/
-└── sql/
+└── learning-note-title.md
 ```
 
 파일 예시:
@@ -40,7 +33,6 @@ src/content/notes/
 title: "선형 회귀분석"
 description: "선형 회귀의 핵심 가정과 해석 방법"
 publishedAt: 2026-08-12
-section: "ADP"
 cover: "/images/notes/linear-regression.jpg"
 draft: false
 ---
@@ -50,7 +42,9 @@ draft: false
 본문을 Markdown으로 작성합니다.
 ```
 
-`section`은 `ADP`, `Python`, `SQL` 중 하나여야 합니다. `draft: true`인 글은 목록과 정적 배포에서 제외됩니다.
+`draft: true`인 글은 목록과 정적 배포에서 제외됩니다.
+
+학습 노트의 `publishedAt`은 최신 업로드 순서를 정하는 데만 사용하며, 화면에는 표시되지 않습니다.
 
 ## 프로젝트 추가
 
@@ -89,6 +83,7 @@ title: "경험 제목"
 description: "어떤 맥락에서 어떤 역할을 맡았는지 한 문장으로 작성합니다."
 organization: "기관 또는 활동명"
 kind: "교육"
+publishedAt: 2026-08-12
 startedAt: 2026-08-01
 endedAt: 2026-08-31
 roles: ["데이터 분석", "협업"]
@@ -101,7 +96,7 @@ draft: false
 경험에서 한 일과 배운 점을 Markdown으로 작성합니다.
 ```
 
-`endedAt`을 생략하면 현재 진행 중인 경험으로 표시됩니다.
+`publishedAt`은 홈의 최근 업로드 순서를 정하는 값이며 화면에는 표시되지 않습니다. `endedAt`을 생략하면 현재 진행 중인 경험으로 표시됩니다.
 
 ## 썸네일과 대표 이미지
 

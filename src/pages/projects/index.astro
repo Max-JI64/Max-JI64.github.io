@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import AwardTrophy from "../../components/AwardTrophy.astro";
 import ContentThumbnail from "../../components/ContentThumbnail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
@@ -16,8 +17,9 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
         <div class="projects-grid">
           {projects.map((project, index) => (
             <a class:list={["project-tile", { "project-tile-featured": project.data.featured || (!projects.some((entry) => entry.data.featured) && index === 0) }]} href={`/projects/${project.id}/`}>
-              <ContentThumbnail src={project.data.thumbnail} alt={`${project.data.title} 대표 이미지`} label={project.data.category} className="project-tile-thumbnail" />
-              <div class="project-tile-copy"><div><p class="project-status">{project.data.category}</p><h2>{project.data.title}</h2><p>{project.data.description}</p></div><div class="project-tile-footer"><time>기간 {project.data.period}</time><span>{project.data.role}</span><span aria-hidden="true">→</span></div></div>
+              <ContentThumbnail src={project.data.thumbnail} alt={`${project.data.title} 대표 이미지`} label={project.data.category || "PROJECT"} className="project-tile-thumbnail" />
+              <div class="project-tile-copy"><div>{project.data.category && <p class="project-status">{project.data.category}</p>}<h2>{project.data.title}</h2>{project.data.description && <p>{project.data.description}</p>}</div><div class="project-tile-footer"><time>기간 {project.data.period}</time>{project.data.award && <span class="project-award-tag">{project.data.award} 수상</span>}{project.data.role && <span>{project.data.role}</span>}<span aria-hidden="true">→</span></div></div>
+              {project.data.award && <AwardTrophy award={project.data.award} variant="tile" />}
             </a>
           ))}
         </div>
