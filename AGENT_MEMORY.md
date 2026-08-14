@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-14T18:40+09:00
+- Last updated: 2026-08-14T18:47+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -81,6 +81,13 @@
   - Content: 기본 방문자 분석은 측정 ID `G-61F69Q2Z25`의 GA4 전역 태그로 수행한다. 태그는 공통 `BaseLayout.astro`에 두어 이후 콘텐츠 발행에도 자동 적용하며, 현 단계에서는 별도 사용자 식별 또는 DB를 추가하지 않는다.
   - Evidence: `src/layouts/BaseLayout.astro`; `npm run check`, `npm run build`, `rg -F "G-61F69Q2Z25" dist/index.html` 통과.
 
+- `decision:search-console-html-verification`
+  - Created: 2026-08-14T18:47+09:00
+  - Updated: 2026-08-14T18:47+09:00
+  - Status: active
+  - Content: GitHub Pages 하위 도메인의 Search Console URL 접두어 소유권 확인은 공통 레이아웃의 HTML 메타 태그로 수행한다. 태그는 배포 후에도 유지한다.
+  - Evidence: `src/layouts/BaseLayout.astro`; `npm run check`, `npm run build`, 빌드 산출물의 확인 태그 검증 통과.
+
 ## Working conventions
 
 ## Known issues and fixes
@@ -88,9 +95,9 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-14T18:40+09:00
-  - Current state: GA4 측정 ID `G-61F69Q2Z25`를 공통 레이아웃에 연결했고, 타입 검사와 정적 빌드 결과에서 태그 출력을 확인했다. 변경 사항은 로컬 작업 트리에만 있으며 아직 GitHub Pages에 배포되지 않았다.
-  - Next step: 변경 사항을 `main`에 반영해 GitHub Pages 배포가 끝나면 GA4 실시간 보고서에서 직접 방문을 확인한다. 방문 지역과 개인정보 처리방침에 맞춰 동의 배너 필요성도 검토한다.
+  - Updated: 2026-08-14T18:47+09:00
+  - Current state: GA4 태그와 Search Console HTML 소유권 확인 태그를 공통 레이아웃에 추가했고, 타입 검사와 정적 빌드 산출물에서 두 태그를 확인했다. 변경 사항은 로컬 작업 트리에만 있으며 아직 GitHub Pages에 배포되지 않았다.
+  - Next step: 변경 사항을 `main`에 반영해 GitHub Pages 배포가 끝나면 Search Console에서 소유권 확인, 사이트맵 제출, GA4 실시간 수집 확인을 차례로 진행한다. 방문 지역과 개인정보 처리방침에 맞춰 동의 배너 필요성도 검토한다.
   - Blockers: 없음.
 
 ## Session log
@@ -118,9 +125,9 @@
 
 - `session:20260814-1815`
   - Started: 2026-08-14T18:15+09:00
-  - Last activity: 2026-08-14T18:40+09:00
+  - Last activity: 2026-08-14T18:47+09:00
   - Focus: 개인 아카이브의 방문자 분석 도구 선택과 GA4 연결 범위 안내.
-  - Updated keys: `decision:ga4-basic-measurement`, `handoff:current`.
-  - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. 측정 ID를 공통 레이아웃에 연결하고 빌드 산출물에 태그가 출력되는 것을 확인했으며, 배포 및 실시간 수집 확인은 남아 있다.
+  - Updated keys: `decision:ga4-basic-measurement`, `decision:search-console-html-verification`, `handoff:current`.
+  - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. GA4 및 Search Console HTML 확인 태그를 공통 레이아웃에 연결하고 빌드 산출물에 출력되는 것을 확인했으며, 배포와 외부 서비스 검증은 남아 있다.
 
 ## Session archive
