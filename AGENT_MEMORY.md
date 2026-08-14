@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-13T21:06+09:00
+- Last updated: 2026-08-14T18:40+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -74,6 +74,13 @@
   - Content: 사이트 기본 테마는 다크 모드이며, 상단의 라이트/다크 전환 버튼으로 바꾼 선택은 브라우저 `localStorage`에 저장해 다음 방문에도 유지한다.
   - Evidence: `src/layouts/BaseLayout.astro`, `src/components/Header.astro`, `src/styles/global.css`; `npm run check`, `npm run build` 통과.
 
+- `decision:ga4-basic-measurement`
+  - Created: 2026-08-14T18:40+09:00
+  - Updated: 2026-08-14T18:40+09:00
+  - Status: active
+  - Content: 기본 방문자 분석은 측정 ID `G-61F69Q2Z25`의 GA4 전역 태그로 수행한다. 태그는 공통 `BaseLayout.astro`에 두어 이후 콘텐츠 발행에도 자동 적용하며, 현 단계에서는 별도 사용자 식별 또는 DB를 추가하지 않는다.
+  - Evidence: `src/layouts/BaseLayout.astro`; `npm run check`, `npm run build`, `rg -F "G-61F69Q2Z25" dist/index.html` 통과.
+
 ## Working conventions
 
 ## Known issues and fixes
@@ -81,9 +88,9 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-13T21:06+09:00
-  - Current state: 모든 페이지 헤더에 현재 테마와 반대되는 테마로 전환하는 버튼을 추가했고, 저장값이 없을 때는 다크 모드로 초기 렌더링한다. `astro check`와 정적 빌드가 통과했다.
-  - Next step: 사용자가 실제 화면에서 전환 버튼의 문구와 배치를 확인한 뒤 필요하면 조정한다.
+  - Updated: 2026-08-14T18:40+09:00
+  - Current state: GA4 측정 ID `G-61F69Q2Z25`를 공통 레이아웃에 연결했고, 타입 검사와 정적 빌드 결과에서 태그 출력을 확인했다. 변경 사항은 로컬 작업 트리에만 있으며 아직 GitHub Pages에 배포되지 않았다.
+  - Next step: 변경 사항을 `main`에 반영해 GitHub Pages 배포가 끝나면 GA4 실시간 보고서에서 직접 방문을 확인한다. 방문 지역과 개인정보 처리방침에 맞춰 동의 배너 필요성도 검토한다.
   - Blockers: 없음.
 
 ## Session log
@@ -108,5 +115,12 @@
   - Focus: 전역 라이트/다크 테마 전환과 기본 다크 모드 설정.
   - Updated keys: `decision:site-theme-default`, `handoff:current`.
   - Summary: 헤더에 접근 가능한 테마 전환 버튼을 추가하고, 저장된 선택이 없으면 다크 모드로 초기 렌더링하도록 변경했다. 선택은 브라우저에 저장되며 타입 검사와 정적 빌드를 통과했다.
+
+- `session:20260814-1815`
+  - Started: 2026-08-14T18:15+09:00
+  - Last activity: 2026-08-14T18:40+09:00
+  - Focus: 개인 아카이브의 방문자 분석 도구 선택과 GA4 연결 범위 안내.
+  - Updated keys: `decision:ga4-basic-measurement`, `handoff:current`.
+  - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. 측정 ID를 공통 레이아웃에 연결하고 빌드 산출물에 태그가 출력되는 것을 확인했으며, 배포 및 실시간 수집 확인은 남아 있다.
 
 ## Session archive

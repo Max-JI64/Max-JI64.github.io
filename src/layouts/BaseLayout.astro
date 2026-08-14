@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { title, description, structuredData } = Astro.props;
+const gaMeasurementId = "G-61F69Q2Z25";
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const structuredDataJson = structuredData
   ? JSON.stringify(structuredData).replaceAll("<", "\\u003c")
@@ -29,6 +30,15 @@ const structuredDataJson = structuredData
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta name="theme-color" content="#11151c" />
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+    <script is:inline define:vars={{ gaMeasurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", gaMeasurementId);
+    </script>
     <script is:inline>
       const savedTheme = localStorage.getItem("theme");
       document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
