@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-14T18:47+09:00
+- Last updated: 2026-08-14T18:54+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -92,12 +92,21 @@
 
 ## Known issues and fixes
 
+- `issue:search-console-sitemap-read`
+  - Created: 2026-08-14T18:54+09:00
+  - Updated: 2026-08-14T18:54+09:00
+  - Status: open
+  - Symptom: Search Console의 `/sitemap.xml` 세부 화면이 발견된 페이지 0개와 `사이트맵을 읽을 수 없음`을 표시했다.
+  - Cause: 공개 사이트맵은 HTTP 200, `application/xml`, 유효한 urlset이고 robots.txt도 허용하므로 현재 확인된 범위에서는 코드·호스팅 문제가 아니다. Search Console의 최초 수집 또는 일시적 처리 실패로 판단된다.
+  - Fix: 24시간 후 상태를 재확인하고 같은 오류가 지속될 때만 사이트맵을 삭제 후 `sitemap.xml`으로 다시 제출한다.
+  - Evidence: 2026-08-14 공개 `https://max-ji64.github.io/sitemap.xml` 및 Googlebot User-Agent 요청이 HTTP 200과 XML urlset을 반환했고, `robots.txt`가 동일 사이트맵을 선언했다.
+
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-14T18:47+09:00
-  - Current state: GA4 태그와 Search Console HTML 소유권 확인 태그를 공통 레이아웃에 추가했고, 타입 검사와 정적 빌드 산출물에서 두 태그를 확인했다. 변경 사항은 로컬 작업 트리에만 있으며 아직 GitHub Pages에 배포되지 않았다.
-  - Next step: 변경 사항을 `main`에 반영해 GitHub Pages 배포가 끝나면 Search Console에서 소유권 확인, 사이트맵 제출, GA4 실시간 수집 확인을 차례로 진행한다. 방문 지역과 개인정보 처리방침에 맞춰 동의 배너 필요성도 검토한다.
+  - Updated: 2026-08-14T18:54+09:00
+  - Current state: 공개 홈 페이지에서 GA4와 Search Console 확인 태그를, 공개 사이트맵에서 HTTP 200·`application/xml`·XML urlset을 확인했다. 다만 Search Console은 최초 사이트맵 읽기 오류를 표시한다.
+  - Next step: 24시간 후 Search Console 상태를 재확인하고 오류가 유지될 때만 사이트맵을 재제출한다. 이후 URL 검사로 홈 페이지 색인을 요청하고 GA4 실시간 수집을 확인한다.
   - Blockers: 없음.
 
 ## Session log
@@ -125,9 +134,9 @@
 
 - `session:20260814-1815`
   - Started: 2026-08-14T18:15+09:00
-  - Last activity: 2026-08-14T18:47+09:00
+  - Last activity: 2026-08-14T18:54+09:00
   - Focus: 개인 아카이브의 방문자 분석 도구 선택과 GA4 연결 범위 안내.
-  - Updated keys: `decision:ga4-basic-measurement`, `decision:search-console-html-verification`, `handoff:current`.
-  - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. GA4 및 Search Console HTML 확인 태그를 공통 레이아웃에 연결하고 빌드 산출물에 출력되는 것을 확인했으며, 배포와 외부 서비스 검증은 남아 있다.
+  - Updated keys: `decision:ga4-basic-measurement`, `decision:search-console-html-verification`, `issue:search-console-sitemap-read`, `handoff:current`.
+  - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. GA4와 Search Console 태그의 공개 반영 및 유효한 공개 사이트맵을 확인했으며, Search Console의 최초 사이트맵 읽기 오류는 하루 뒤 재확인하기로 했다.
 
 ## Session archive
