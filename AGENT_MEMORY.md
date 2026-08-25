@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-25T15:39+09:00
+- Last updated: 2026-08-25T15:49+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -90,9 +90,9 @@
 
 - `decision:markdown-latex-rendering`
   - Created: 2026-08-25T15:26+09:00
-  - Updated: 2026-08-25T15:26+09:00
-  - Status: active
-  - Content: Markdown의 LaTeX 수식은 `remark-math`와 `rehype-katex`로 변환하고 공통 레이아웃에서 KaTeX CSS를 불러온다. 날씨 콘테스트의 F2 Score 일반식과 β=2 식은 display math로 작성한다.
+  - Updated: 2026-08-25T15:49+09:00
+  - Status: superseded
+  - Content: LaTeX 연동은 `issue:markdown-latex-npm-lock` 해결 전까지 제거한다. F2 Score 수식은 기존 HTML 아래첨자·위첨자 표기로 복원했다.
   - Evidence: `package.json`, `package-lock.json`, `astro.config.mjs`, `src/layouts/BaseLayout.astro`, `src/content/projects/2026-weather-big-data-contest.md`.
 
 ## Working conventions
@@ -130,6 +130,15 @@
 
 ## Known issues and fixes
 
+- `issue:markdown-latex-npm-lock`
+  - Created: 2026-08-25T15:49+09:00
+  - Updated: 2026-08-25T15:49+09:00
+  - Status: open
+  - Symptom: GitHub Actions의 `npm ci`가 package.json과 package-lock.json 불일치로 실패하며 `@emnapi/runtime@1.11.3`과 `@emnapi/core@1.11.3` 누락을 보고했다.
+  - Cause: 확정하지 못했다. LaTeX 의존성을 추가하며 갱신된 잠금 파일에 Linux CI가 요구한 선택적 `@emnapi` 의존성이 기록되지 않은 상태였다.
+  - Fix: LaTeX 관련 패키지·Astro 설정·KaTeX CSS를 제거하고 package.json과 package-lock.json을 도입 이전 상태로 복원했다. LaTeX를 다시 적용하려면 Linux CI와 호환되는 잠금 파일 생성 방식을 먼저 검증해야 한다.
+  - Evidence: GitHub Actions `npm ci` 로그, `package.json`, `package-lock.json`.
+
 - `issue:astro-dev-startup`
   - Created: 2026-08-25T15:39+09:00
   - Updated: 2026-08-25T15:39+09:00
@@ -160,10 +169,10 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-25T15:39+09:00
-  - Current state: 첨부 이미지 수치로 SHAP 설명을 보강하고 하단에 최종 모델링 결과 요약을 추가했다. Astro 개발 서버 재시작은 실패했고 사용자 요청에 따라 중단했다.
-  - Next step: 사용자가 요청하면 Astro 개발 서버가 준비 전에 종료되는 원인을 확인한 뒤 LaTeX 렌더링을 검증한다.
-  - Blockers: Astro 개발 서버가 `Dev server process exited before becoming ready.` 오류로 시작되지 않는다.
+  - Updated: 2026-08-25T15:49+09:00
+  - Current state: 포트폴리오 내용 보강은 유지하고 LaTeX 도입에 따른 패키지·설정·수식 변경만 이전 상태로 복원했다.
+  - Next step: LaTeX 재도입 전 Linux GitHub Actions에서도 일관된 package-lock.json을 생성하는 방법과 Astro 개발 서버 종료 원인을 확인한다.
+  - Blockers: LaTeX 의존성 추가 후 Linux CI의 `npm ci`가 선택적 `@emnapi` 의존성 누락으로 실패했으며, 로컬 Astro 개발 서버도 준비 전에 종료된다.
 
 ## Session log
 
@@ -197,9 +206,9 @@
 
 - `session:20260825-1008`
   - Started: 2026-08-25T10:08+09:00
-  - Last activity: 2026-08-25T15:39+09:00
+  - Last activity: 2026-08-25T15:49+09:00
   - Focus: 날씨 콘테스트 페이지의 `## 핵심 EDA` 이하를 실제 발표 내용에 맞춰 재구성하기 위한 범위와 순서 설계.
-  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `handoff:current`.
-  - Summary: 상세 포트폴리오의 EDA 설명과 수치를 보강하고 강조 문법을 `<strong>`으로 통일했다. LaTeX 지원 연결 뒤 개발 서버 재시작은 준비 단계에서 실패해 중단했으며, 마지막으로 첨부 이미지의 SHAP 비중과 최종 모델 성능 및 전신주 적용 결과를 본문에 반영했다.
+  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
+  - Summary: 상세 포트폴리오의 EDA와 모델 결과를 보강하고 강조 문법을 `<strong>`으로 통일했다. LaTeX 연동 후 Linux CI의 `npm ci`가 잠금 파일 불일치로 실패해 관련 패키지·설정·수식을 도입 이전 상태로 복원했으며, 재도입 전 잠금 파일 문제를 해결하도록 기록했다.
 
 ## Session archive

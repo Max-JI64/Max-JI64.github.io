@@ -324,22 +324,11 @@ XGBoost는 AUROC, CatBoost는 Log Loss에서 더 좋은 결과를 보였다. 그
 
 이 두 조건을 함께 반영하기 위해 재현율에 정밀도보다 두 배의 가중치를 주는 F2 Score로 운영 임계값을 정했다. Fβ Score의 일반식은 다음과 같다.
 
-$$
-F_{\beta}
-=
-(1+\beta^2)
-\frac{\mathrm{Precision}\times\mathrm{Recall}}
-{\beta^2\times\mathrm{Precision}+\mathrm{Recall}}
-$$
+> F<sub>β</sub> = (1 + β<sup>2</sup>) × (Precision × Recall) / (β<sup>2</sup> × Precision + Recall)
 
 여기서 Precision은 고위험으로 선별한 표본 중 실제 산불의 비율이고, Recall은 전체 산불 중 고위험군이 포착한 비율이다. β에 2를 대입하면 다음 식이 된다.
 
-$$
-F_2
-=
-5\frac{\mathrm{Precision}\times\mathrm{Recall}}
-{4\times\mathrm{Precision}+\mathrm{Recall}}
-$$
+> F<sub>2</sub> = 5 × (Precision × Recall) / (4 × Precision + Recall)
 
 F2 Score는 실제 산불을 놓치는 문제를 더 크게 반영하면서도, 모든 지점을 고위험으로 분류해 경보량이 과도하게 늘어나는 상황을 함께 제어한다.
 
