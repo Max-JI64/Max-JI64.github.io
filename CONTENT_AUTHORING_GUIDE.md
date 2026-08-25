@@ -57,6 +57,27 @@ description: "회귀모형의 설명력과 계수 해석을 분석 문장으로 
 </figure>
 ```
 
+## 본문 수식 작성법
+
+- 수식은 LaTeX 패키지를 추가하지 않고 브라우저 기본 MathML로 작성합니다.
+- 블록 수식은 `<math display="block" style="font-size: 1.5rem;">`로 시작합니다.
+- 아래첨자·위첨자·분수는 각각 `<msub>`, `<msup>`, `<mfrac>` 요소로 표현합니다.
+- 변수는 `<mi>`, 숫자는 `<mn>`, 연산자는 `<mo>`를 사용합니다.
+
+```html
+<math display="block" style="font-size: 1.5rem;">
+  <msub>
+    <mi>F</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow><mn>5</mn><mo>×</mo><mi>Precision</mi><mo>×</mo><mi>Recall</mi></mrow>
+    <mrow><mn>4</mn><mo>×</mo><mi>Precision</mi><mo>+</mo><mi>Recall</mi></mrow>
+  </mfrac>
+</math>
+```
+
 ## 키워드 작성 규칙
 
 각 템플릿에는 `keywords`가 있습니다. 화면에 해시태그로 표시되지 않으며, 페이지의 JSON-LD 구조화 데이터에 해당 글을 설명하는 보조 정보로 사용됩니다.

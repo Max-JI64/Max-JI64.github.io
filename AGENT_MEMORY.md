@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-25T16:01+09:00
+- Last updated: 2026-08-25T16:08+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -90,12 +90,25 @@
 
 - `decision:markdown-latex-rendering`
   - Created: 2026-08-25T15:26+09:00
-  - Updated: 2026-08-25T15:49+09:00
+  - Updated: 2026-08-25T16:08+09:00
   - Status: superseded
-  - Content: LaTeX 연동은 `issue:markdown-latex-npm-lock` 해결 전까지 제거한다. F2 Score 수식은 기존 HTML 아래첨자·위첨자 표기로 복원했다.
+  - Content: LaTeX 연동은 폐기하고 `convention:content-mathml-formulas`로 대체했다. 별도 npm 패키지 없이 브라우저 기본 MathML을 사용한다.
   - Evidence: `package.json`, `package-lock.json`, `astro.config.mjs`, `src/layouts/BaseLayout.astro`, `src/content/projects/2026-weather-big-data-contest.md`.
 
 ## Working conventions
+
+- `convention:content-mathml-formulas`
+  - Created: 2026-08-25T16:08+09:00
+  - Updated: 2026-08-25T16:08+09:00
+  - Status: active
+  - Content: 프로젝트·학습 노트·경험 Markdown의 수식은 LaTeX 패키지 대신 브라우저 기본 MathML로 작성하며, 블록 수식은 `<math display="block" style="font-size: 1.5rem;">` 형식을 사용한다.
+  - Evidence: `CONTENT_AUTHORING_GUIDE.md`, `src/content/projects/TEMPLATE.md`, `src/content/notes/TEMPLATE.md`, `src/content/experiences/TEMPLATE.md`, `src/content/projects/2026-weather-big-data-contest.md`.
+
+- `convention:weather-page-complete`
+  - Created: 2026-08-25T16:08+09:00
+  - Updated: 2026-08-25T16:08+09:00
+  - Status: active
+  - Content: `src/content/projects/2026-weather-big-data-contest.md`의 발표·보고서 기반 내용 수정과 수식·이미지 표시 조정을 완료했으며, 사용자가 이 상태에서 페이지 작업을 마무리하기로 확정했다.
 
 - `convention:content-figure-sizing`
   - Created: 2026-08-25T16:01+09:00
@@ -139,11 +152,11 @@
 
 - `issue:markdown-latex-npm-lock`
   - Created: 2026-08-25T15:49+09:00
-  - Updated: 2026-08-25T15:49+09:00
-  - Status: open
+  - Updated: 2026-08-25T16:08+09:00
+  - Status: resolved
   - Symptom: GitHub Actions의 `npm ci`가 package.json과 package-lock.json 불일치로 실패하며 `@emnapi/runtime@1.11.3`과 `@emnapi/core@1.11.3` 누락을 보고했다.
   - Cause: 확정하지 못했다. LaTeX 의존성을 추가하며 갱신된 잠금 파일에 Linux CI가 요구한 선택적 `@emnapi` 의존성이 기록되지 않은 상태였다.
-  - Fix: LaTeX 관련 패키지·Astro 설정·KaTeX CSS를 제거하고 package.json과 package-lock.json을 도입 이전 상태로 복원했다. LaTeX를 다시 적용하려면 Linux CI와 호환되는 잠금 파일 생성 방식을 먼저 검증해야 한다.
+  - Fix: LaTeX 관련 패키지·Astro 설정·KaTeX CSS를 제거하고 package.json과 package-lock.json을 도입 이전 상태로 복원했다. 수식은 npm 의존성이 없는 MathML로 대체해 배포와 표시를 확인했다.
   - Evidence: GitHub Actions `npm ci` 로그, `package.json`, `package-lock.json`.
 
 - `issue:astro-dev-startup`
@@ -176,10 +189,10 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-25T16:01+09:00
-  - Current state: Astro 개발 서버가 `http://127.0.0.1:4321`로 실행 중이며, 모든 콘텐츠 템플릿과 작성 가이드에 figure 폭·가운데 정렬 규칙을 추가했다.
-  - Next step: 새 페이지의 이미지는 figure의 width 비율을 조절해 크기를 정하고 이미지와 캡션을 가운데 배치한다.
-  - Blockers: LaTeX 재도입 시 `@emnapi` 선택적 의존성 잠금 파일 문제가 남아 있다.
+  - Updated: 2026-08-25T16:08+09:00
+  - Current state: 2026 날씨 빅데이터 콘테스트 페이지 수정은 완료됐다. 수식은 MathML, 이미지는 figure의 width 비율과 가운데 정렬 규칙을 사용한다.
+  - Next step: 다음 콘텐츠 작업부터 공통 작성 가이드와 템플릿의 MathML·figure 규칙을 적용한다.
+  - Blockers: 없음.
 
 ## Session log
 
@@ -213,9 +226,9 @@
 
 - `session:20260825-1008`
   - Started: 2026-08-25T10:08+09:00
-  - Last activity: 2026-08-25T16:01+09:00
+  - Last activity: 2026-08-25T16:08+09:00
   - Focus: 날씨 콘테스트 페이지의 `## 핵심 EDA` 이하를 실제 발표 내용에 맞춰 재구성하기 위한 범위와 순서 설계.
-  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `convention:content-figure-sizing`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
-  - Summary: 상세 포트폴리오의 EDA와 모델 결과를 보강하고 LaTeX 연동 실패를 복원한 뒤 로컬 서버를 정상화했다. 이후 모든 콘텐츠 작성 가이드와 템플릿에 figure의 80% 폭, 영역 및 캡션 가운데 정렬 규칙을 추가했다.
+  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `convention:content-figure-sizing`, `convention:content-mathml-formulas`, `convention:weather-page-complete`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
+  - Summary: 날씨 콘테스트 포트폴리오의 EDA·모델 결과·이미지 표시를 보강했다. LaTeX 연동은 npm 잠금 파일 문제로 폐기하고 배포가 확인된 MathML로 대체했으며, 공통 작성 규칙에 반영한 뒤 사용자의 확인에 따라 페이지 수정을 완료했다.
 
 ## Session archive
