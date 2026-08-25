@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-14T18:54+09:00
+- Last updated: 2026-08-25T15:39+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -88,9 +88,65 @@
   - Content: GitHub Pages 하위 도메인의 Search Console URL 접두어 소유권 확인은 공통 레이아웃의 HTML 메타 태그로 수행한다. 태그는 배포 후에도 유지한다.
   - Evidence: `src/layouts/BaseLayout.astro`; `npm run check`, `npm run build`, 빌드 산출물의 확인 태그 검증 통과.
 
+- `decision:markdown-latex-rendering`
+  - Created: 2026-08-25T15:26+09:00
+  - Updated: 2026-08-25T15:26+09:00
+  - Status: active
+  - Content: Markdown의 LaTeX 수식은 `remark-math`와 `rehype-katex`로 변환하고 공통 레이아웃에서 KaTeX CSS를 불러온다. 날씨 콘테스트의 F2 Score 일반식과 β=2 식은 display math로 작성한다.
+  - Evidence: `package.json`, `package-lock.json`, `astro.config.mjs`, `src/layouts/BaseLayout.astro`, `src/content/projects/2026-weather-big-data-contest.md`.
+
 ## Working conventions
 
+- `convention:weather-no-automatic-astro-validation`
+  - Created: 2026-08-25T15:26+09:00
+  - Updated: 2026-08-25T15:26+09:00
+  - Status: active
+  - Content: 날씨 콘테스트 Markdown을 수정할 때 사용자가 별도로 요청하지 않으면 Astro 검사, 빌드, 업로드 또는 서버 확인을 실행하지 않는다.
+
+- `convention:content-strong-emphasis`
+  - Created: 2026-08-25T11:40+09:00
+  - Updated: 2026-08-25T11:40+09:00
+  - Status: active
+  - Content: 프로젝트·학습 노트·경험을 포함한 모든 Markdown 콘텐츠 본문에서 굵은 강조는 `**텍스트**` 대신 `<strong>텍스트</strong>`을 사용한다. 표와 HTML 블록에도 동일하게 적용하며, 색상 등 추가 스타일은 페이지에 정의된 클래스를 `<strong>`에 붙여 사용한다.
+  - Evidence: `CONTENT_AUTHORING_GUIDE.md`, `src/content/projects/TEMPLATE.md`, `src/content/notes/TEMPLATE.md`, `src/content/experiences/TEMPLATE.md`.
+
+- `convention:weather-presentation-bounded-rewrite`
+  - Created: 2026-08-25T10:08+09:00
+  - Updated: 2026-08-25T10:43+09:00
+  - Status: active
+  - Content: 날씨 콘테스트 페이지는 `날씨 빅데이터 자료/발표스크립트.md`와 최종 분석보고서 HWPX를 근거로 상세하게 작성하며, 보고서에만 있는 내용도 사용할 수 있다. 두 자료에 없는 주장은 넣지 않고, 데이터 누수 설명은 제외하며, 기상셀은 기존 전용 단락에서만 설명하고 이미지는 Codex가 분석하지 않는다.
+
+- `convention:weather-prose-humanizer`
+  - Created: 2026-08-25T10:43+09:00
+  - Updated: 2026-08-25T10:43+09:00
+  - Status: active
+  - Content: 날씨 콘테스트 페이지 전체의 설명·전환·해석 문장은 `humanizer` 기준으로 자연스럽게 다듬되, frontmatter, 공식 수치, 표, 출처, 기술 명칭처럼 평서적으로 전달해야 하는 정보는 사실과 형식을 우선해 보존한다.
+
+- `convention:weather-presentation-order-approval`
+  - Created: 2026-08-25T10:08+09:00
+  - Updated: 2026-08-25T10:08+09:00
+  - Status: active
+  - Content: 날씨 콘테스트 페이지의 발표 흐름은 필요하면 재배열할 수 있지만, Codex는 변경 이유와 대안 순서를 먼저 제시하고 사용자 허락을 받은 뒤에만 순서를 바꾼다.
+
 ## Known issues and fixes
+
+- `issue:astro-dev-startup`
+  - Created: 2026-08-25T15:39+09:00
+  - Updated: 2026-08-25T15:39+09:00
+  - Status: open
+  - Symptom: `npm run dev -- --host 127.0.0.1 --port 4321 --strictPort`가 `Dev server process exited before becoming ready.`를 출력하고 4321 포트를 열지 못한다.
+  - Cause: 미확인. Astro 관리 명령으로 기존 서버를 중지하고 동일한 초기 실행 방식으로 재시도해도 같은 증상이 발생했다.
+  - Fix: 사용자가 서버 작업을 나중으로 미뤘다. 다음 세션에서 개발 서버 프로세스의 실제 종료 원인을 먼저 확인한다.
+  - Evidence: `%TEMP%/max-ji64-astro-dev.stderr.log`, `astro dev status`, 4321 포트 리스너 확인.
+
+- `issue:weather-bold-marker-rendering`
+  - Created: 2026-08-25T11:36+09:00
+  - Updated: 2026-08-25T11:36+09:00
+  - Status: resolved
+  - Symptom: 사용자가 날씨 콘테스트 페이지의 일부 `**` 강조 표기가 문자 그대로 보인다고 확인했다.
+  - Cause: 현재 정적 빌드에서는 재현되지 않아 이전 개발 서버 출력이나 raw HTML 문맥과 Markdown 강조가 섞인 시점의 렌더링으로 추정한다.
+  - Fix: 페이지의 Markdown 강조를 모두 명시적 `<strong>` 요소로 바꾸고, 모델별 최고 점수에는 테마 대응 `weather-best-score` 강조색을 적용했다.
+  - Evidence: `npm run check`, `npm run build`, 빌드 HTML의 `**` 0건과 `weather-best-score` 5개 확인, 로컬 HTTP 200 확인.
 
 - `issue:search-console-sitemap-read`
   - Created: 2026-08-14T18:54+09:00
@@ -104,10 +160,10 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-14T18:54+09:00
-  - Current state: 공개 홈 페이지에서 GA4와 Search Console 확인 태그를, 공개 사이트맵에서 HTTP 200·`application/xml`·XML urlset을 확인했다. 다만 Search Console은 최초 사이트맵 읽기 오류를 표시한다.
-  - Next step: 24시간 후 Search Console 상태를 재확인하고 오류가 유지될 때만 사이트맵을 재제출한다. 이후 URL 검사로 홈 페이지 색인을 요청하고 GA4 실시간 수집을 확인한다.
-  - Blockers: 없음.
+  - Updated: 2026-08-25T15:39+09:00
+  - Current state: 첨부 이미지 수치로 SHAP 설명을 보강하고 하단에 최종 모델링 결과 요약을 추가했다. Astro 개발 서버 재시작은 실패했고 사용자 요청에 따라 중단했다.
+  - Next step: 사용자가 요청하면 Astro 개발 서버가 준비 전에 종료되는 원인을 확인한 뒤 LaTeX 렌더링을 검증한다.
+  - Blockers: Astro 개발 서버가 `Dev server process exited before becoming ready.` 오류로 시작되지 않는다.
 
 ## Session log
 
@@ -138,5 +194,12 @@
   - Focus: 개인 아카이브의 방문자 분석 도구 선택과 GA4 연결 범위 안내.
   - Updated keys: `decision:ga4-basic-measurement`, `decision:search-console-html-verification`, `issue:search-console-sitemap-read`, `handoff:current`.
   - Summary: 현재 Astro 정적 GitHub Pages 구조를 확인해 기본 방문·유입·콘텐츠 소비 분석에는 GA4를 권장했다. GA4와 Search Console 태그의 공개 반영 및 유효한 공개 사이트맵을 확인했으며, Search Console의 최초 사이트맵 읽기 오류는 하루 뒤 재확인하기로 했다.
+
+- `session:20260825-1008`
+  - Started: 2026-08-25T10:08+09:00
+  - Last activity: 2026-08-25T15:39+09:00
+  - Focus: 날씨 콘테스트 페이지의 `## 핵심 EDA` 이하를 실제 발표 내용에 맞춰 재구성하기 위한 범위와 순서 설계.
+  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `handoff:current`.
+  - Summary: 상세 포트폴리오의 EDA 설명과 수치를 보강하고 강조 문법을 `<strong>`으로 통일했다. LaTeX 지원 연결 뒤 개발 서버 재시작은 준비 단계에서 실패해 중단했으며, 마지막으로 첨부 이미지의 SHAP 비중과 최종 모델 성능 및 전신주 적용 결과를 본문에 반영했다.
 
 ## Session archive

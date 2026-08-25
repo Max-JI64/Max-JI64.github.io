@@ -306,6 +306,7 @@ h2 { margin-bottom: 0; font-size: clamp(29px, 3vw, 42px); font-weight: 850; lett
 .weather-project-page .prose th, .weather-project-page .prose td { min-width: 120px; padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 .weather-project-page .prose th { color: var(--ink); font-size: 13px; font-weight: 850; }
 .weather-project-page .prose td { color: color-mix(in srgb, var(--ink) 86%, var(--ink-soft)); }
+.weather-project-page .prose .weather-best-score { color: var(--heading-accent); font-weight: 900; }
 .weather-project-page .prose :is(img, iframe) { max-width: 100%; }
 .weather-award-figure, .weather-wide-figure, .weather-figure-grid figure { margin: 31px 0; }
 .weather-award-figure img, .weather-wide-figure img, .weather-figure-grid img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-muted); }
