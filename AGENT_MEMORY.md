@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-25T15:49+09:00
+- Last updated: 2026-08-25T16:01+09:00
 - Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -97,6 +97,13 @@
 
 ## Working conventions
 
+- `convention:content-figure-sizing`
+  - Created: 2026-08-25T16:01+09:00
+  - Updated: 2026-08-25T16:01+09:00
+  - Status: active
+  - Content: 프로젝트·학습 노트·경험 Markdown의 본문 이미지는 `<figure>`에 `style="width: 80%; margin-inline: auto; text-align: center;"`를 적용하고, 이미지 크기는 figure의 width 비율로 조절한다.
+  - Evidence: `CONTENT_AUTHORING_GUIDE.md`, `src/content/projects/TEMPLATE.md`, `src/content/notes/TEMPLATE.md`, `src/content/experiences/TEMPLATE.md`.
+
 - `convention:weather-no-automatic-astro-validation`
   - Created: 2026-08-25T15:26+09:00
   - Updated: 2026-08-25T15:26+09:00
@@ -141,12 +148,12 @@
 
 - `issue:astro-dev-startup`
   - Created: 2026-08-25T15:39+09:00
-  - Updated: 2026-08-25T15:39+09:00
-  - Status: open
+  - Updated: 2026-08-25T15:53+09:00
+  - Status: resolved
   - Symptom: `npm run dev -- --host 127.0.0.1 --port 4321 --strictPort`가 `Dev server process exited before becoming ready.`를 출력하고 4321 포트를 열지 못한다.
-  - Cause: 미확인. Astro 관리 명령으로 기존 서버를 중지하고 동일한 초기 실행 방식으로 재시도해도 같은 증상이 발생했다.
-  - Fix: 사용자가 서버 작업을 나중으로 미뤘다. 다음 세션에서 개발 서버 프로세스의 실제 종료 원인을 먼저 확인한다.
-  - Evidence: `%TEMP%/max-ji64-astro-dev.stderr.log`, `astro dev status`, 4321 포트 리스너 확인.
+  - Cause: LaTeX 의존성과 Astro Markdown 설정을 추가한 상태에서 발생했다. 정확한 내부 원인은 확인하지 못했다.
+  - Fix: LaTeX 관련 변경을 이전 상태로 복원한 뒤 같은 명령으로 서버를 다시 실행하자 정상적으로 시작됐다.
+  - Evidence: `%TEMP%/max-ji64-astro-dev.stdout.log`, `http://127.0.0.1:4321/projects/2026-weather-big-data-contest/` HTTP 200 확인.
 
 - `issue:weather-bold-marker-rendering`
   - Created: 2026-08-25T11:36+09:00
@@ -169,10 +176,10 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-25T15:49+09:00
-  - Current state: 포트폴리오 내용 보강은 유지하고 LaTeX 도입에 따른 패키지·설정·수식 변경만 이전 상태로 복원했다.
-  - Next step: LaTeX 재도입 전 Linux GitHub Actions에서도 일관된 package-lock.json을 생성하는 방법과 Astro 개발 서버 종료 원인을 확인한다.
-  - Blockers: LaTeX 의존성 추가 후 Linux CI의 `npm ci`가 선택적 `@emnapi` 의존성 누락으로 실패했으며, 로컬 Astro 개발 서버도 준비 전에 종료된다.
+  - Updated: 2026-08-25T16:01+09:00
+  - Current state: Astro 개발 서버가 `http://127.0.0.1:4321`로 실행 중이며, 모든 콘텐츠 템플릿과 작성 가이드에 figure 폭·가운데 정렬 규칙을 추가했다.
+  - Next step: 새 페이지의 이미지는 figure의 width 비율을 조절해 크기를 정하고 이미지와 캡션을 가운데 배치한다.
+  - Blockers: LaTeX 재도입 시 `@emnapi` 선택적 의존성 잠금 파일 문제가 남아 있다.
 
 ## Session log
 
@@ -206,9 +213,9 @@
 
 - `session:20260825-1008`
   - Started: 2026-08-25T10:08+09:00
-  - Last activity: 2026-08-25T15:49+09:00
+  - Last activity: 2026-08-25T16:01+09:00
   - Focus: 날씨 콘테스트 페이지의 `## 핵심 EDA` 이하를 실제 발표 내용에 맞춰 재구성하기 위한 범위와 순서 설계.
-  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
-  - Summary: 상세 포트폴리오의 EDA와 모델 결과를 보강하고 강조 문법을 `<strong>`으로 통일했다. LaTeX 연동 후 Linux CI의 `npm ci`가 잠금 파일 불일치로 실패해 관련 패키지·설정·수식을 도입 이전 상태로 복원했으며, 재도입 전 잠금 파일 문제를 해결하도록 기록했다.
+  - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `convention:content-figure-sizing`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
+  - Summary: 상세 포트폴리오의 EDA와 모델 결과를 보강하고 LaTeX 연동 실패를 복원한 뒤 로컬 서버를 정상화했다. 이후 모든 콘텐츠 작성 가이드와 템플릿에 figure의 80% 폭, 영역 및 캡션 가운데 정렬 규칙을 추가했다.
 
 ## Session archive

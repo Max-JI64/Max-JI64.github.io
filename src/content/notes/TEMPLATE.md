@@ -10,6 +10,10 @@ draft: true
 <!--
 본문에서 굵게 강조할 때는 Markdown 문법인 **텍스트** 대신
 <strong>텍스트</strong>을 사용합니다. 표나 HTML 블록 안에서도 같은 규칙을 적용합니다.
+
+이미지는 <figure> 요소로 삽입하고
+style="width: 80%; margin-inline: auto; text-align: center;"를 적용합니다.
+크기를 바꿀 때는 figure의 width 비율을 조절합니다.
 -->
 
 ## 핵심 질문

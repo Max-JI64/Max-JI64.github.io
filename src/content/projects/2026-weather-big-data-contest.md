@@ -160,7 +160,7 @@ F2 Score로 정한 운영 기준에 따라 <strong>118,805개</strong>, 전체�
 
 각 셀의 기상값은 주변 ASOS·AWS 관측값에 거리의 역제곱 가중치를 적용하는 IDW 방식으로 보간했다. 이 과정을 거쳐 강원도를 92개 기상셀로 나눴다. 산불, 대조군, 전신주는 좌표에 따라 셀에 배정하고, 소속 셀과 기준시각에 맞는 시간별 기상을 연결했다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/weather-cell-idw.png" alt="기상 관측지점에서 92개 기상셀과 IDW 보간값을 생성하는 과정" width="3600" height="2025" loading="lazy" />
   <figcaption>관측지점의 영향권을 나누고 IDW로 시간별 기상을 보간한 과정.</figcaption>
 </figure>
@@ -198,7 +198,7 @@ F2 Score로 정한 운영 기준에 따라 <strong>118,805개</strong>, 전체�
 
 거리 변수는 한쪽으로 긴 분포를 완화하기 위해 `log(1+x)`로 변환했다. 풍향과 사면방향은 0도와 360도가 이어지는 원형 변수이므로 sin과 cos 값으로 바꿨다. 시간, 기상, 공간·지형, 산불기상지수, 토지피복을 조합해 후보 변수군을 구성했다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/model-training-pipeline.png" alt="산불과 세 종류의 대조군을 기상·공간·산불기상지수·토지피복 변수와 연결한 모델 학습 파이프라인" width="3600" height="2025" loading="lazy" />
   <figcaption>학습 표본 구성부터 후보 모델 비교와 최종 LightGBM 선정까지의 흐름.</figcaption>
 </figure>
@@ -217,7 +217,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 시간대별로는 전체 산불의 약 88%가 오전 9시부터 오후 4시 사이에 발생했다. 야간 발생은 상대적으로 적었다. 이 분포만으로 인간 활동이 산불의 원인이라고 단정할 수는 없지만, 계절적 건조 조건과 낮 시간대의 활동이 함께 작용했을 가능성은 확인할 수 있었다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-month-hour.png" alt="기후지형유형별 월별·시간대별 산불 발생 건수" width="4769" height="1469" loading="lazy" />
   <figcaption>기후지형유형별 월별·시간대별 산불 발생 분포.</figcaption>
 </figure>
@@ -230,7 +230,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 산불과 관련된 건조 신호는 발생 순간에만 나타난 일시적 저습이 아니었다. 발생 전날부터 이어진 낮은 습도가 더 안정적으로 관찰됐다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-humidity-control.png" alt="산불 발생 시점과 매칭 비발생 대조군의 습도 비교" width="2310" height="1590" loading="lazy" />
   <figcaption>산불 발생 시점과 같은 조건으로 매칭한 비발생 대조군의 습도 비교.</figcaption>
 </figure>
@@ -239,7 +239,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 산불 발생 전에는 단기 강수량뿐 아니라 마지막 유효 강수 이후의 경과시간에서도 차이가 나타났다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 65%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-rain.png" alt="산불 발생 시점과 매칭 비발생 대조군의 강수량 비교" width="2310" height="1590" loading="lazy" />
   <figcaption>영서에서 72시간 강수 결핍 최대</figcaption>
 </figure>
@@ -253,7 +253,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 강원도 전체를 묶으면 산불과 대조군의 직전 24시간 평균풍속 차이는 0.11m/s였고 신뢰구간은 0을 포함했다. 바람은 습도처럼 전 지역에서 일관되게 나타난 선행 신호가 아니었다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 65%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-wind-speed
 .png" alt="산불 발생 시점과 매칭 비발생 대조군의 풍속 비교" width="2310" height="1590" loading="lazy" />
   <figcaption>양간지풍은 영동, 특히 겨울에 증폭</figcaption>
@@ -267,7 +267,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 캐나다 산불기상지수는 기온, 습도, 풍속, 강수량을 이용해 계산한 파생지표다. 산불 없이 배경 분포만 보더라도 영동 해안형은 겨울에, 영서 내륙형과 고지·산간형은 봄에 FWI가 상대적으로 높았다. 따라서 산불 시점의 지수를 연중 전체 비발생 시점과 단순 비교하면 계절과 권역의 차이가 산불 신호처럼 섞일 수 있다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-canada-ffmc.png" alt="산불 발생 시점과 매칭 비발생 대조군의 캐나다 산불 기상지수 비교" width="2310" height="1590" loading="lazy" />
   <figcaption>앞선 권역별 EDA와 캐나다 산불 기상지수의 경향이 동일하다</figcaption>
 </figure>
@@ -278,7 +278,7 @@ EDA에서는 산불이 언제, 어떤 기상과 공간 조건에서 집중되는
 
 ### 생활권-WUI와 도로 접경에 치우친 발생지
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/eda-wui-spatial.png" alt="생활권 WUI와 도로 주변에 집중된 산불 발생지의 공간 특성" width="2000" height="1200" loading="lazy" />
   <figcaption>생활권-WUI, 도로 접근성, 토지피복과 지형을 함께 비교한 공간 분석 결과.</figcaption>
 </figure>
@@ -324,17 +324,71 @@ XGBoost는 AUROC, CatBoost는 Log Loss에서 더 좋은 결과를 보였다. 그
 
 이 두 조건을 함께 반영하기 위해 재현율에 정밀도보다 두 배의 가중치를 주는 F2 Score로 운영 임계값을 정했다. Fβ Score의 일반식은 다음과 같다.
 
-> F<sub>β</sub> = (1 + β<sup>2</sup>) × (Precision × Recall) / (β<sup>2</sup> × Precision + Recall)
+<math display="block" style="font-size: 1.5rem;">
+  <msub>
+    <mi>F</mi>
+    <mi>β</mi>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>(</mo>
+      <mn>1</mn>
+      <mo>+</mo>
+      <msup>
+        <mi>β</mi>
+        <mn>2</mn>
+      </msup>
+      <mo>)</mo>
+      <mo>×</mo>
+      <mi>Precision</mi>
+      <mo>×</mo>
+      <mi>Recall</mi>
+    </mrow>
+    <mrow>
+      <msup>
+        <mi>β</mi>
+        <mn>2</mn>
+      </msup>
+      <mo>×</mo>
+      <mi>Precision</mi>
+      <mo>+</mo>
+      <mi>Recall</mi>
+    </mrow>
+  </mfrac>
+</math>
 
 여기서 Precision은 고위험으로 선별한 표본 중 실제 산불의 비율이고, Recall은 전체 산불 중 고위험군이 포착한 비율이다. β에 2를 대입하면 다음 식이 된다.
 
-> F<sub>2</sub> = 5 × (Precision × Recall) / (4 × Precision + Recall)
+<math display="block" style="font-size: 1.5rem;">
+  <msub>
+    <mi>F</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mn>5</mn>
+      <mo>×</mo>
+      <mi>Precision</mi>
+      <mo>×</mo>
+      <mi>Recall</mi>
+    </mrow>
+    <mrow>
+      <mn>4</mn>
+      <mo>×</mo>
+      <mi>Precision</mi>
+      <mo>+</mo>
+      <mi>Recall</mi>
+    </mrow>
+  </mfrac>
+</math>
 
 F2 Score는 실제 산불을 놓치는 문제를 더 크게 반영하면서도, 모든 지점을 고위험으로 분류해 경보량이 과도하게 늘어나는 상황을 함께 제어한다.
 
 F2 Score가 가장 높은 위험점수 임계값은 `0.019979`였다. 이 기준에서 검증 표본의 14.67%인 2,500건을 고위험으로 선별했고, 실제 산불 1,553건 중 1,118건을 포착했다. 재현율은 71.99%, 정밀도는 44.72%였다. 재현율을 90%까지 높일 수도 있었지만 이 경우 선별 비율이 34% 이상으로 늘어났다.
 
-<figure class="weather-wide-figure">
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/model-f2-operating-point.png" alt="선별 비율에 따른 F2 Score, 재현율, 정밀도 변화" width="2550" height="1560" loading="lazy" />
   <figcaption>선별 범위가 넓어질수록 재현율은 높아지고 정밀도는 낮아진다. F2 Score가 가장 높은 지점을 기본 운영 기준으로 사용했다.</figcaption>
 </figure>
@@ -353,7 +407,7 @@ SHAP은 각 변수가 모델의 예측값에 얼마나 기여했는지 계산하
 
 최종 모델은 공간적 취약성을 중심에 두고 장기 건조와 최근 강수·습도 조건을 함께 반영했다. 이는 EDA에서 확인한 산불 발생지의 공간 구조와 발생 전 기상 조건과도 이어진다. 다만 SHAP 값은 인과관계가 아니라, 학습된 모델 안에서 각 변수가 예측에 기여한 정도를 나타낸다.
 
-<figure class="weather-wide-figure weather-compact-figure">
+<figure class="weather-wide-figure weather-compact-figure" style="width: 65%; margin-inline: auto; text-align: center;">
   <img src="/projects/2026-weather-big-data-contest/images/model-shap-importance.png" alt="최종 LightGBM의 SHAP 중요도 상위 변수" width="1800" height="1440" loading="lazy" />
   <figcaption>공간적 취약성과 장기·최근 건조 조건이 함께 나타난 SHAP 중요도 상위 변수.</figcaption>
 </figure>

@@ -44,6 +44,19 @@ description: "회귀모형의 설명력과 계수 해석을 분석 문장으로 
 - 표, `<details>` 요소, 그 밖의 HTML 블록 안에서도 같은 방식을 사용합니다.
 - 색상처럼 추가 스타일이 필요한 강조는 해당 페이지에 정의된 클래스를 `<strong>`에 붙입니다. 일반적인 굵은 강조에는 별도 클래스를 사용하지 않습니다.
 
+## 본문 이미지 작성법
+
+- 프로젝트·학습 노트·경험 페이지에 이미지를 삽입할 때는 `<figure>` 요소에 `style="width: 80%; margin-inline: auto; text-align: center;"`를 적용합니다.
+- 이미지 크기는 `<img>`의 원본 `width`와 `height` 값을 바꾸는 대신 `<figure>`의 `width` 비율로 조절합니다. 이미지 비율은 원본 비율에 맞춰 함께 줄어듭니다.
+- `margin-inline: auto`로 이미지 영역을 가운데에 배치하고, `text-align: center`로 `<figcaption>`을 가운데 정렬합니다.
+
+```html
+<figure class="weather-wide-figure" style="width: 80%; margin-inline: auto; text-align: center;">
+  <img src="/images/example.png" alt="이미지 설명" width="1600" height="900" loading="lazy" />
+  <figcaption>이미지 캡션.</figcaption>
+</figure>
+```
+
 ## 키워드 작성 규칙
 
 각 템플릿에는 `keywords`가 있습니다. 화면에 해시태그로 표시되지 않으며, 페이지의 JSON-LD 구조화 데이터에 해당 글을 설명하는 보조 정보로 사용됩니다.
