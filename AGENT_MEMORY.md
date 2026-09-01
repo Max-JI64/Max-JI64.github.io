@@ -5,7 +5,7 @@
 
 ## Project snapshot
 
-- Last updated: 2026-09-01T22:30+09:00
+- Last updated: 2026-09-01T22:52+09:00
 - Purpose: 날씨 빅데이터, 금융 AI, 업스테이지 하네스 엔지니어링, MOLIP과 성남시 공공데이터 공모전을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
@@ -39,6 +39,13 @@
   - Content: 공통 헤더의 데스크톱·모바일 주요 메뉴는 `홈`, `프로젝트`, `경험`, `학습 노트` 순서로 표시한다. About은 상단 주요 메뉴에서 제외하되 `/about/` 경로 자체는 유지한다.
   - Evidence: `src/components/Header.astro`; 사용자 직접 검증 원칙에 따라 코드와 공백 오류만 확인하고 브라우저·빌드는 수행하지 않음.
 
+- `decision:public-experience-reflection-disclosures`
+  - Created: 2026-09-01T22:44+09:00
+  - Updated: 2026-09-01T22:44+09:00
+  - Status: active
+  - Content: 자기소개서 경험은행 원문은 공개하지 않고, 기존 프로젝트 본문과 중복되지 않는 판단·실패·전환 사례만 `판단과 시행착오` 기본 접힘 토글로 공개한다. 버팀AI 3개, 업스테이지 1개, 날씨 2개, MOLIP 2개, 성남시 1개를 선별하고 이미 네 사례를 충분히 설명하는 AI TOP 100은 추가하지 않는다. 자기소개서 문항 태그, 사실 확인 메모와 내부 경로는 노출하지 않는다.
+  - Evidence: `자기소개서 경험 소재 정리.md`, `src/content/projects/{2026-finance-ai-challenge-buteomai,upstage-harness-engineering-skillthon,2026-weather-big-data-contest,molip-ai-daily-planner,2025-seongnam-public-data-contest}.md`, `src/styles/global.css`; 토글 5개·사례 9개와 article 태그 균형, `git diff --check` 통과. 브라우저·전체 빌드는 수행하지 않음.
+
 - `decision:2026-weather-big-data-contest-base`
   - Created: 2026-08-13T14:59+09:00
   - Updated: 2026-08-13T16:36+09:00
@@ -62,10 +69,10 @@
 
 - `decision:ai-top-100-prompt-disclosures`
   - Created: 2026-09-01T22:24+09:00
-  - Updated: 2026-09-01T22:24+09:00
+  - Updated: 2026-09-01T22:52+09:00
   - Status: active
-  - Content: AI TOP 100 경험 페이지의 계획 수립 프롬프트와 문제 풀이 지시 프롬프트 전문은 각 설명 바로 아래의 기본 접힘 토글로 제공한다. 전문은 준비 폴더의 원본 Markdown에서 빌드 시 직접 읽어 별도 복제본 없이 표시하고, 수능 경향 분석 적용 예시는 실제 적용 근거로 유지한다.
-  - Evidence: `AI TOP 100 대회 본선 진출/AI TOP 100 분석 계획 수립 프롬프트.md`, `AI TOP 100 대회 본선 진출/AI TOP 100 문제 풀이 지시 프롬프트.md`, `src/content/experiences/ai-top-100-campus-finalist.md`, `src/pages/experiences/ai-top-100-campus-finalist/prompts/[kind].astro`, `src/styles/global.css`; 원문 추출 범위와 공백 오류만 정적으로 확인하고 브라우저·전체 빌드는 수행하지 않음.
+  - Content: AI TOP 100 경험 페이지의 계획 수립 프롬프트와 문제 풀이 지시 프롬프트 전문은 각 설명 바로 아래의 기본 접힘 토글로 제공한다. 배포가 준비 폴더의 존재 여부에 의존하지 않도록 복원된 원본 Markdown을 `src/data/experiences/ai-top-100-campus-finalist/`에 바이트 동일 사본으로 보관하고 페이지는 그 저장소 내부 사본을 읽는다. 수능 경향 분석 적용 예시는 실제 적용 근거로 유지한다.
+  - Evidence: `AI TOP 100 대회 본선 진출/AI TOP 100 분석 계획 수립 프롬프트.md`, `AI TOP 100 대회 본선 진출/AI TOP 100 문제 풀이 지시 프롬프트.md`, `src/data/experiences/ai-top-100-campus-finalist/`, `src/content/experiences/ai-top-100-campus-finalist.md`, `src/pages/experiences/ai-top-100-campus-finalist/prompts/[kind].astro`, `src/styles/global.css`; 원본과 사본 SHA-256은 각각 `7F58E914932A5255DB8705DDFE0CED640126958C71D13E1D175C936A43563406`, `66097AAFC232395DC084AC0CA4256B332A3925BE8C0801EE0844B383F25561F8`로 일치하며 `git diff --check` 통과. 브라우저·전체 빌드는 수행하지 않음.
 
 - `decision:molip-project-record`
   - Created: 2026-09-01T19:24+09:00
@@ -288,6 +295,15 @@
 
 ## Known issues and fixes
 
+- `issue:ai-top-prompt-source-import`
+  - Created: 2026-09-01T22:52+09:00
+  - Updated: 2026-09-01T22:52+09:00
+  - Status: resolved
+  - Symptom: GitHub Actions 빌드가 저장소 루트의 `AI TOP 100 대회 본선 진출` 폴더를 가리키는 프롬프트 Markdown import를 찾지 못해 실패했다.
+  - Cause: Astro 페이지가 삭제되거나 Git에 포함되지 않을 수 있는 준비 원본 경로를 직접 import해 CI 배포가 로컬 준비 폴더에 의존했다.
+  - Fix: 사용자가 복원한 두 원본을 `src/data/experiences/ai-top-100-campus-finalist/`에 그대로 복사하고 `[kind].astro`가 저장소 내부 사본만 import하도록 변경했다.
+  - Evidence: 두 원본과 사본의 SHA-256 동일 확인, `src/pages/experiences/ai-top-100-campus-finalist/prompts/[kind].astro`, `git diff --check` 통과. 사용자 지시에 따라 빌드와 브라우저 검증은 수행하지 않음.
+
 - `issue:finance-content-depth`
   - Created: 2026-08-31T14:42+09:00
   - Updated: 2026-08-31T15:09+09:00
@@ -372,9 +388,9 @@
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-09-01T22:30+09:00
-  - Current state: 편집용 Astro 서버가 `http://127.0.0.1:4321/`에서 실행 중이다. 프로젝트 전체 목록의 수상 프로젝트 제목 정렬을 분리했고, 홈 경험 카드 기간 글자를 프로젝트 카드 기간과 같은 크기와 굵기로 맞췄다.
-  - Next step: 사용자가 프로젝트 목록 제목 위치와 홈 경험 기간 글자 모양을 직접 확인한다. 요청에 따라 브라우저·시각 검증과 전체 빌드는 수행하지 않았다.
+  - Updated: 2026-09-01T22:52+09:00
+  - Current state: 편집용 Astro 서버가 `http://127.0.0.1:4321/`에서 실행 중이다. 다섯 프로젝트 상세 페이지의 `판단과 시행착오` 토글을 유지하며, 복원된 AI TOP 100 프롬프트 원본 두 개를 저장소 내부 `src/data`에 복사하고 배포 import를 해당 사본으로 전환했다.
+  - Next step: 새 `src/data/experiences/ai-top-100-campus-finalist/` 파일 두 개와 `[kind].astro` 변경을 커밋·푸시한 뒤 사용자가 CI 빌드를 확인한다. 요청에 따라 브라우저·시각 검증과 전체 빌드는 수행하지 않았다.
   - Blockers: 없음.
 
 ## Session log
@@ -437,10 +453,10 @@
 
 - `session:20260901-1855`
   - Started: 2026-09-01T18:55+09:00
-  - Last activity: 2026-09-01T22:30+09:00
-  - Focus: 블로그 편집용 서버, 업스테이지 미디어, 홈·아카이브·헤더 탐색, 표 가독성과 경험 날짜 연동 개선.
-  - Updated keys: `handoff:current`, `issue:upstage-poster-viewport-scale`, `decision:upstage-video-chapters`, `decision:upstage-dashboard-toggle`, `decision:home-project-carousel-discoverability`, `decision:ai-top-100-experience-record`, `decision:ai-top-100-prompt-disclosures`, `decision:project-archive-list-layout`, `decision:global-prose-table-ui`, `decision:header-primary-navigation`, `convention:user-owned-browser-validation`.
-  - Summary: 동일 작업공간의 병행 작업을 보존하며 업스테이지 미디어, 홈 탐색·정렬, 전체 프로젝트 목록과 전역 표 UI를 수정했다. 홈 경험 영역을 세로 한 항목 이동으로 바꾸고 경험 날짜를 공통 포맷으로 통합한 뒤, 공통 헤더 메뉴를 홈·프로젝트·경험·학습 노트 순서로 변경했다. AI TOP 100의 두 프롬프트 전문은 원본 연동형 기본 접힘 토글로 추가하고 실제 수능 적용 예시는 유지했다. 프로젝트 전체 목록에서는 수상 정보가 제목을 아래로 미는 정렬을 분리하고, 홈 경험 기간 글자도 프로젝트 카드와 같은 크기·굵기로 통일했다. 최근 변경은 사용자 지시에 따라 코드만 반영하고 브라우저·시각 검증과 전체 빌드를 생략했다.
+  - Last activity: 2026-09-01T22:52+09:00
+  - Focus: 블로그 편집용 서버와 UI 개선, 공개 프로젝트 페이지에 자기소개서 경험 소재를 선별 반영.
+  - Updated keys: `handoff:current`, `issue:upstage-poster-viewport-scale`, `issue:ai-top-prompt-source-import`, `decision:upstage-video-chapters`, `decision:upstage-dashboard-toggle`, `decision:home-project-carousel-discoverability`, `decision:ai-top-100-experience-record`, `decision:ai-top-100-prompt-disclosures`, `decision:project-archive-list-layout`, `decision:global-prose-table-ui`, `decision:header-primary-navigation`, `decision:public-experience-reflection-disclosures`, `convention:user-owned-browser-validation`.
+  - Summary: 동일 작업공간의 병행 작업을 보존하며 업스테이지 미디어, 홈 탐색·정렬, 전체 프로젝트 목록과 전역 표 UI를 수정했다. 헤더·홈 경험 날짜·AI TOP 100 프롬프트 토글까지 정리한 뒤, 경험은행의 36개 카드를 현재 공개된 여섯 활동 페이지와 대조했다. 자기소개서용 메타데이터와 중복 설명은 제외하고 다섯 프로젝트 페이지에 총 9개의 판단·실패·전환 사례를 기본 접힘 토글로 추가했다. 이후 사용자가 복원한 AI TOP 100 프롬프트 두 원본을 저장소 내부 `src/data`에 동일 복사하고 import를 전환해 CI가 준비 폴더에 의존하던 문제를 수정했다. 최근 변경은 사용자 지시에 따라 정적 검사만 수행하고 브라우저·시각 검증과 전체 빌드를 생략했다.
 
 - `session:20260901-1856`
   - Started: 2026-09-01T18:56+09:00

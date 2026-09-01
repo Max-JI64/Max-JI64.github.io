@@ -317,6 +317,21 @@ Timely 실행 전에는 동일한 최종 Skill과 입력을 로컬 `run-004`에�
 
 지역 청년 정착은 Agent를 검증하기 위한 첫 적용 사례입니다. 같은 구조의 지역×연도 데이터라면 인구, 고용, 주거와 복지처럼 다른 주제에도 네 Skill과 승인·검증 구조를 다시 사용할 수 있습니다.
 
+## 판단과 시행착오
+
+<details class="decision-log-disclosure">
+  <summary><span>의사결정 기록 보기</span><small>1개 사례</small></summary>
+  <div class="decision-log-list">
+    <article class="decision-log-item" data-step="01">
+      <p class="decision-log-eyebrow">제한 시간 안의 범위 조정</p>
+      <h3>단일 Skill을 네 단계로 확장한 뒤, 마감 직전에는 다시 좁혔다</h3>
+      <p><strong>상황</strong> 표 데이터를 살펴보는 단일 EDA Skill로 시작했지만 안정적인 실행을 위해 계획·데이터 준비·EDA·산출물 제작의 네 Skill로 확장했다. 이후 마감 전날 Timely의 High 추론 실행이 토큰 한도를 초과해 중단됐다.</p>
+      <p><strong>판단과 행동</strong> 같은 방식의 재실행보다 완주 가능성을 우선했다. 계획 요청과 승인 후 실행을 분리하고 추론 강도를 Medium으로 낮췄으며, 긴 결과는 artifact로 저장하고 반복 계산은 Python에 맡겼다. Document AI와 지도 분석, 누락된 세부 인사이트를 채우기 위한 위험한 재실행도 현재 범위에서 제외했다.</p>
+      <p><strong>결과와 한계</strong> 약 28시간 안에 네 Skill, 실제 실행 영상, PDF·대시보드, 발표자료와 포스터를 만들고 마감 2시간 20분 전에 제출 패키지를 완성했다. 종단간 기술 실행은 완료했지만 승인한 세부 분석 일부가 빠져 질문 충족도는 부분 달성으로 구분했다.</p>
+    </article>
+  </div>
+</details>
+
 ## 관련 자료
 
 - [최종 발표자료 PDF](/projects/upstage-harness-engineering-skillthon/presentation.pdf)

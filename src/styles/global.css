@@ -377,6 +377,22 @@ h2 { margin-bottom: 0; font-size: clamp(29px, 3vw, 42px); font-weight: 850; lett
 .prompt-source-content iframe { display: block; width: 100%; height: min(72dvh, 760px); min-height: 460px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-muted); }
 .prompt-source-content > p { margin: 14px 2px 0; text-align: right; }
 .prompt-source-content > p a { font-size: 13px; font-weight: 800; }
+.decision-log-disclosure { overflow: hidden; margin: 24px 0 38px; border: 1px solid color-mix(in srgb, var(--heading-accent, var(--accent)) 30%, var(--line)); border-radius: 14px; background: var(--surface); }
+.decision-log-disclosure > summary { display: grid; min-height: 68px; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 16px; padding: 16px 19px; cursor: pointer; list-style: none; }
+.decision-log-disclosure > summary::-webkit-details-marker { display: none; }
+.decision-log-disclosure > summary span { color: var(--ink); font-weight: 850; }
+.decision-log-disclosure > summary small { color: var(--ink-soft); font-size: 12px; font-weight: 750; }
+.decision-log-disclosure > summary::after { min-width: 47px; color: var(--heading-accent, var(--accent)); content: "열기"; font-size: 12px; font-weight: 850; text-align: right; }
+.decision-log-disclosure[open] > summary { border-bottom: 1px solid var(--line); background: var(--surface-muted); }
+.decision-log-disclosure[open] > summary::after { content: "닫기"; }
+.decision-log-list { padding: 0 22px; counter-reset: decision-log; }
+.decision-log-item { position: relative; padding: 25px 0 25px 42px; counter-increment: decision-log; }
+.decision-log-item + .decision-log-item { border-top: 1px solid var(--line); }
+.decision-log-item::before { position: absolute; top: 27px; left: 0; display: grid; width: 27px; height: 27px; place-items: center; border: 1px solid color-mix(in srgb, var(--heading-accent, var(--accent)) 55%, var(--line)); border-radius: 50%; background: color-mix(in srgb, var(--heading-accent, var(--accent)) 10%, var(--surface)); color: var(--heading-accent, var(--accent)); content: attr(data-step); font-size: 10px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.prose .decision-log-item .decision-log-eyebrow { margin: 0 0 7px; color: var(--heading-accent, var(--accent)); font-size: 12px; font-weight: 850; letter-spacing: -0.02em; }
+.prose .decision-log-item h3 { margin: 0 0 16px; color: var(--ink); font-size: clamp(19px, 2vw, 24px); line-height: 1.35; letter-spacing: -0.045em; }
+.prose .decision-log-item p { margin: 10px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.75; }
+.prose .decision-log-item p strong { margin-right: 7px; color: var(--ink); }
 .upstage-dashboard-content { padding: 0 22px 22px; }
 .upstage-dashboard-content > p { margin: 18px 0; }
 .upstage-dashboard-content iframe { display: block; width: 100%; min-height: 760px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff; }
@@ -522,6 +538,14 @@ h2 { margin-bottom: 0; font-size: clamp(29px, 3vw, 42px); font-weight: 850; lett
   .prompt-source-disclosure > summary::after { grid-column: 2; grid-row: 1 / span 2; }
   .prompt-source-content { padding: 12px; }
   .prompt-source-content iframe { height: 68dvh; min-height: 420px; }
+  .decision-log-disclosure > summary { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
+  .decision-log-disclosure > summary small { grid-column: 1; }
+  .decision-log-disclosure > summary::after { grid-column: 2; grid-row: 1 / span 2; }
+  .decision-log-list { padding: 0 16px; }
+  .decision-log-item { padding: 22px 0 22px 36px; }
+  .decision-log-item::before { top: 24px; width: 24px; height: 24px; }
+  .prose .decision-log-item h3 { font-size: 19px; }
+  .prose .decision-log-item p { font-size: 14px; line-height: 1.7; }
   .upstage-dashboard-content { padding: 0 14px 14px; }
   .upstage-dashboard-content iframe { min-height: 620px; }
   .video-demo-player { width: 100%; }

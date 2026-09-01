@@ -135,7 +135,28 @@ OpenAI 호환 RunPod 클라이언트와 Gemini 대체 경로를 구현하고 Qwe
 
 팀이 만든 서비스 전체와 직접 구현한 AI 범위는 구분해서 기록했다. 현재 파이프라인은 자체 선형 호출 구조이며 LangChain이나 LangGraph를 사용하지 않는다. 개인화에는 일정 순서 변경 분석이 없고, 채팅과 MCP 검색 도구도 자동 호출 방식으로 연결되어 있지 않다. 원문에 기록된 서비스 URL의 현재 운영 상태는 이번 작성에서 확인하지 않았으므로 데모 링크로 제공하지 않는다.
 
+## 판단과 시행착오
+
+<details class="decision-log-disclosure">
+  <summary><span>의사결정 기록 보기</span><small>2개 사례</small></summary>
+  <div class="decision-log-list">
+    <article class="decision-log-item" data-step="01">
+      <p class="decision-log-eyebrow">개발 방식 전환</p>
+      <h3>모든 것을 먼저 설계하려던 접근을 작은 구현 중심으로 바꿨다</h3>
+      <p><strong>상황</strong> 낯선 AI 서비스 개발을 안전하게 진행하려고 로직·데이터 흐름·API를 구현 전에 최대한 확정하려 했다. 하지만 실제로 만들 때마다 빠진 조건과 새 데이터가 발견돼 이미 협의한 구조를 반복해서 수정해야 했고 API 명세 전달도 늦어졌다.</p>
+      <p><strong>판단과 행동</strong> 파트 간 의존성이 있는 최소 API 계약은 먼저 합의하되, 불확실한 내부 로직은 작은 기능으로 구현하고 검증하기로 했다. 목표를 V1·V2·V3로 나누고 데일리 스크럼과 KPT 회고에서 변경 사항과 다음 시도를 공유했다.</p>
+      <p><strong>결과와 한계</strong> 반복 구현을 통해 처음에는 보이지 않던 조건과 개발 흐름을 확인하며 서비스 배포까지 이어갔다. 다만 당시 API 충돌의 정확한 항목과 최종 합의 기록은 충분하지 않아, 갈등을 완벽히 해결한 사례로 설명하지 않는다.</p>
+    </article>
+    <article class="decision-log-item" data-step="02">
+      <p class="decision-log-eyebrow">기술 범위 축소</p>
+      <h3>강화학습보다 실패해도 일정을 반환하는 플래너를 우선했다</h3>
+      <p><strong>상황</strong> 초기에는 강화학습을 포함한 개인화 플래너를 구상했지만 짧은 프로젝트에서 학습 데이터를 확보하고 효과를 검증하기 어려웠다. 외부 모델이 불안정할 때 기본 일정조차 반환하지 못하는 문제도 더 시급했다.</p>
+      <p><strong>판단과 행동</strong> 강화학습과 모델 재학습을 현재 범위에서 제외했다. LLM은 작업 의미와 인지 부하 해석에 한정하고, 점수 계산·후보 평가·최종 시간 배정은 Python이 맡도록 분리했다. 호출 실패 시에는 규칙 기반 결과로 전환하고 사용자 수정은 EMA 가중치로 반영했다.</p>
+      <p><strong>결과</strong> 최종 플래너는 비정형 해석과 결정론적 계산을 결합한 5단계 선형 파이프라인이 됐다. 고도화된 기술보다 어떤 입력에서도 최소한의 결과를 반환하는 것이 먼저라는 제품 기준을 남겼다.</p>
+    </article>
+  </div>
+</details>
+
 ## 관련 자료
 
 - [MOLIP 소개 자료 PDF](/projects/molip-ai-daily-planner/molip-presentation.pdf)
-
