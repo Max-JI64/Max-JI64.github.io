@@ -5,11 +5,39 @@
 
 ## Project snapshot
 
-- Last updated: 2026-08-25T16:08+09:00
-- Purpose: 2026 날씨 빅데이터 콘테스트와 업스테이지 하네스 엔지니어링 스킬톤 기록을 포함하는 개인 프로젝트 아카이브.
+- Last updated: 2026-09-01T22:30+09:00
+- Purpose: 날씨 빅데이터, 금융 AI, 업스테이지 하네스 엔지니어링, MOLIP과 성남시 공공데이터 공모전을 포함하는 개인 프로젝트 아카이브.
 - Important paths: `src/content/projects/`, `src/pages/index.astro`, `AGENT_MEMORY.md`.
 
 ## Durable decisions
+
+- `decision:home-project-carousel-discoverability`
+  - Created: 2026-09-01T19:43+09:00
+  - Updated: 2026-09-01T22:30+09:00
+  - Status: active
+  - Content: 홈 프로젝트, 경험·자격증과 학습 노트 영역은 전체 개수와 현재 표시 범위를 항상 표시하고 카드·목록 밖의 방향 버튼을 hover 없이 노출한다. 프로젝트는 가로, 경험·자격증과 학습 노트는 세로 방향을 따르며 한 번 클릭할 때 한 항목만 이동한다. 경험 카드의 기간 글자는 프로젝트 카드 기간과 같은 12px·750 굵기를 사용한다. 대표 프로젝트를 제외한 다른 프로젝트는 프로젝트 기간 종료일 내림차순으로 정렬하고, 동률이면 글 발행일 최신순을 따른다.
+  - Evidence: `src/pages/index.astro`, `src/styles/global.css`; 경험 기간 글자 통일은 공백 오류만 확인하고 사용자 직접 시각 검증에 남김.
+
+- `decision:project-archive-list-layout`
+  - Created: 2026-09-01T20:27+09:00
+  - Updated: 2026-09-01T22:28+09:00
+  - Status: active
+  - Content: 프로젝트 전체 목록은 경험·자격증 페이지와 같은 `썸네일 | 핵심 설명 | 기간·역할·수상 정보` 행형 목록을 사용한다. 수상 트로피는 오른쪽 정보 칸 안에 작게 배치하되, 오른쪽 수상 정보의 높이가 가운데 제목 위치를 아래로 밀지 않도록 핵심 설명은 행 안에서 독립적으로 가운데 정렬한다. 모바일에서는 한 열로 접고 목록은 프로젝트 기간 종료일 내림차순이며 동률이면 글 발행일 최신순이다.
+  - Evidence: `src/pages/projects/index.astro`, `src/components/AwardTrophy.astro`, `src/styles/global.css`; 제목 정렬 수정은 공백 오류만 확인하고 사용자 직접 시각 검증에 남김.
+
+- `decision:global-prose-table-ui`
+  - Created: 2026-09-01T20:37+09:00
+  - Updated: 2026-09-01T20:37+09:00
+  - Status: active
+  - Content: 프로젝트·경험·학습 노트 상세 본문의 모든 `.prose` 표는 외곽선과 셀 구분선, 포인트색 헤더, 교차 행 배경과 첫 열 강조를 공통으로 사용한다. 데스크톱에서는 본문 너비를 채우고 560px 이하에서는 표 내부 가로 스크롤로 전환해 페이지 전체의 가로 넘침을 막는다.
+  - Evidence: `src/styles/global.css`; `npm run check`, `npm run build`, AI TOP 100 상세의 다크·라이트·390px 모바일과 날씨 빅데이터 상세의 표 8개에 대한 브라우저 검사 통과.
+
+- `decision:header-primary-navigation`
+  - Created: 2026-09-01T22:18+09:00
+  - Updated: 2026-09-01T22:18+09:00
+  - Status: active
+  - Content: 공통 헤더의 데스크톱·모바일 주요 메뉴는 `홈`, `프로젝트`, `경험`, `학습 노트` 순서로 표시한다. About은 상단 주요 메뉴에서 제외하되 `/about/` 경로 자체는 유지한다.
+  - Evidence: `src/components/Header.astro`; 사용자 직접 검증 원칙에 따라 코드와 공백 오류만 확인하고 브라우저·빌드는 수행하지 않음.
 
 - `decision:2026-weather-big-data-contest-base`
   - Created: 2026-08-13T14:59+09:00
@@ -18,12 +46,47 @@
   - Content: 2026 날씨 빅데이터 콘테스트는 2026년 5월 1일부터 8월 5일까지 진행한 `우수상(기상청장상)` 수상 대표 프로젝트로 유지하고, 세부 분석 내용은 추후 보강한다.
   - Evidence: `src/content/projects/2026-weather-big-data-contest.md`.
 
+- `decision:weather-presentation-qa-appendix`
+  - Created: 2026-09-01T18:56+09:00
+  - Updated: 2026-09-01T19:07+09:00
+  - Status: active
+  - Content: 본선 발표 질의응답 정리의 질문 5개와 핵심 한계를 날씨 콘테스트 페이지 마지막에 공개한다. 질문과 답변은 각각 Q/A 블록으로 표시하고 기존 하늘색 포인트 안에서 구분하며, 사용자가 실제 적용 상태를 확인했다.
+  - Evidence: `26.08.05 기상데이터 공모전 - 질의응답_정리.md`, `src/content/projects/2026-weather-big-data-contest.md`, `src/styles/global.css`.
+
+- `decision:ai-top-100-experience-record`
+  - Created: 2026-09-01T19:15+09:00
+  - Updated: 2026-09-01T20:42+09:00
+  - Status: active
+  - Content: AI TOP 100 CAMPUS 활동은 2026년 3월 14일부터 4월 4일까지다. 시작일·종료일은 콘텐츠 frontmatter를 단일 원본으로 사용하고 홈·전체 목록·상세 메타데이터에서 `YYYY. MM. DD.` 형식으로 표시한다. 경험 페이지는 계획 수립·문제 실행 프롬프트의 파일 계약, 수치형 중단 기준, 도구 책임과 수능 경향 분석 적용 예시를 중심으로 공개하며 미검증 성과는 주장하지 않는다.
+  - Evidence: `src/content/experiences/ai-top-100-campus-finalist.md`, `src/utils/formatDate.ts`, `src/pages/index.astro`, `src/pages/experiences/index.astro`, `src/layouts/ExperienceLayout.astro`; 날짜 연동 수정은 사용자 요청에 따라 코드만 반영하고 화면 검증은 수행하지 않음.
+
+- `decision:ai-top-100-prompt-disclosures`
+  - Created: 2026-09-01T22:24+09:00
+  - Updated: 2026-09-01T22:24+09:00
+  - Status: active
+  - Content: AI TOP 100 경험 페이지의 계획 수립 프롬프트와 문제 풀이 지시 프롬프트 전문은 각 설명 바로 아래의 기본 접힘 토글로 제공한다. 전문은 준비 폴더의 원본 Markdown에서 빌드 시 직접 읽어 별도 복제본 없이 표시하고, 수능 경향 분석 적용 예시는 실제 적용 근거로 유지한다.
+  - Evidence: `AI TOP 100 대회 본선 진출/AI TOP 100 분석 계획 수립 프롬프트.md`, `AI TOP 100 대회 본선 진출/AI TOP 100 문제 풀이 지시 프롬프트.md`, `src/content/experiences/ai-top-100-campus-finalist.md`, `src/pages/experiences/ai-top-100-campus-finalist/prompts/[kind].astro`, `src/styles/global.css`; 원문 추출 범위와 공백 오류만 정적으로 확인하고 브라우저·전체 빌드는 수행하지 않음.
+
+- `decision:molip-project-record`
+  - Created: 2026-09-01T19:24+09:00
+  - Updated: 2026-09-01T19:33+09:00
+  - Status: active
+  - Content: MOLIP은 5단계 LLM·결정론적 일정 생성, EMA 개인화, 주간 레포트, 벡터 검색, SSE 채팅과 관측성을 직접 구현한 AI 서비스 프로젝트로 공개한다. 채팅·MCP 자동 호출, 강화학습, LangChain·LangGraph 사용과 현재 서비스 운영은 확인된 범위 밖이므로 주장하지 않는다.
+  - Evidence: `카카오테크 부트캠프 - MOLIP/자소서·포트폴리오용 프로젝트 요약.md`, `src/content/projects/molip-ai-daily-planner.md`, `public/projects/molip-ai-daily-planner/`; `npm run check`, `npm run build`, 데스크톱 다크·라이트와 375px 모바일 브라우저 점검 통과.
+
+- `decision:seongnam-public-data-project-record`
+  - Created: 2026-09-01T19:35+09:00
+  - Updated: 2026-09-01T19:48+09:00
+  - Status: active
+  - Content: 성남시 공공데이터 공모전은 분당구 33개 상권의 29개 변수를 5개 요인과 4개 군집으로 구조화해 전통시장 4곳을 고른 데이터 분석 프로젝트로 공개한다. 정책 시행·효과 검증은 주장하지 않으며, 공개 보고서는 개인정보가 있는 앞 4페이지를 제거하고 대표 사진은 사용자가 직접 얼굴을 비식별 처리한 사본을 쓴다.
+  - Evidence: `2025년 성남시 공공데이터 활용분석 아이디어 공모전/자소서·포트폴리오용 프로젝트 요약.md`, PDF·발표 스크립트 교차 확인, `src/content/projects/2025-seongnam-public-data-contest.md`, `public/projects/2025-seongnam-public-data-contest/`; 공개 보고서 13페이지 중 앞 4페이지를 제거한 9페이지 사본, 민감 문자열 검사 0건, `npm run check`, `npm run build` 통과.
+
 - `decision:recent-content-by-publication`
   - Created: 2026-08-13T15:08+09:00
-  - Updated: 2026-08-13T16:41+09:00
+  - Updated: 2026-09-01T19:48+09:00
   - Status: active
-  - Content: 홈 문구는 최근 업로드로 유지하되, 실제 표시는 프로젝트, 경험 및 자격증, 학습 노트를 통합해 `updatedAt` 최신순으로 하나만 선택하고 수정일은 화면에 표시하지 않는다. `updatedAt`이 없으면 `publishedAt`을 사용한다.
-  - Evidence: `src/pages/index.astro`, `src/content.config.ts`, `src/layouts/NoteLayout.astro`.
+  - Content: 홈 문구는 최근 업로드로 유지하고 `updatedAt ?? publishedAt` 최신순으로 하나를 선택하되, 프로젝트와 경험은 `homeRecent: false`로 후보에서 제외할 수 있다. AI TOP 100 경험, MOLIP과 성남시 프로젝트는 제외하고 날씨 빅데이터 콘테스트를 계속 표시한다.
+  - Evidence: `src/pages/index.astro`, `src/content.config.ts`, `src/content/experiences/TEMPLATE.md`, 빌드된 `dist/index.html`.
 
 - `decision:optional-project-metadata`
   - Created: 2026-08-13T15:14+09:00
@@ -95,7 +158,82 @@
   - Content: LaTeX 연동은 폐기하고 `convention:content-mathml-formulas`로 대체했다. 별도 npm 패키지 없이 브라우저 기본 MathML을 사용한다.
   - Evidence: `package.json`, `package-lock.json`, `astro.config.mjs`, `src/layouts/BaseLayout.astro`, `src/content/projects/2026-weather-big-data-contest.md`.
 
+- `decision:upstage-draft-home-preservation`
+  - Created: 2026-08-31T14:32+09:00
+  - Updated: 2026-08-31T15:07+09:00
+  - Status: active
+  - Content: 업스테이지 하네스 엔지니어링 스킬톤은 준비된 Markdown 근거를 사용한 상세 비교 시안으로 공개하되 확정본으로 간주하지 않는다. `updatedAt`을 두지 않고 `featured: false`, `homeRecent: false`를 유지해 홈 최근 업로드와 대표 프로젝트가 날씨 빅데이터에서 바뀌지 않게 한다.
+  - Evidence: `src/content/projects/upstage-harness-engineering-skillthon.md`, `public/projects/upstage-harness-engineering-skillthon/`, `dist/index.html`; `npm run check`, `npm run build`, 정적 홈 노출 검사 통과.
+
+- `decision:upstage-official-title-and-hero-poster`
+  - Created: 2026-08-31T17:00+09:00
+  - Updated: 2026-08-31T17:00+09:00
+  - Status: active
+  - Content: 업스테이지 상세 페이지의 메인 제목은 공식 대회명 `2026 제1회 Upstage X BDAI Harness Engineering Skillthon`을 사용하고, 메인 이미지는 사용자가 지정한 원본 대회 모집 포스터를 사용한다. 내부 결과 포스터는 본문 산출물로만 유지한다.
+  - Evidence: `업스테이지 하네스 엔지니어링 스킬톤/업스테이지 하네스 엔지니어링 스킬톤 포스터.png`, `public/projects/upstage-harness-engineering-skillthon/images/competition-poster.png`, `src/content/projects/upstage-harness-engineering-skillthon.md`.
+
+- `decision:upstage-video-chapters`
+  - Created: 2026-09-01T19:14+09:00
+  - Updated: 2026-09-01T19:23+09:00
+  - Status: active
+  - Content: 업스테이지 실행 영상과 4개 챕터 타임라인은 기본 접힘 토글 안에 두고, 데스크톱 영상은 본문 내부 너비의 50%, 모바일은 100%로 표시한다. 챕터 이동·현재 위치 강조를 유지하며 토글을 닫으면 재생을 자동 정지한다.
+  - Evidence: `src/content/projects/upstage-harness-engineering-skillthon.md`, `src/styles/global.css`, `public/scripts/video-chapters.js`; `npm run check`, `npm run build`, 브라우저 기본 접힘·50% 폭·89초 재생·닫기 후 정지 확인.
+
+- `decision:upstage-dashboard-toggle`
+  - Created: 2026-09-01T19:27+09:00
+  - Updated: 2026-09-01T19:27+09:00
+  - Status: active
+  - Content: 업스테이지 오프라인 대시보드는 제목을 요약으로 사용하는 기본 접힘 토글 안에 설명, 새 창 링크와 iframe을 함께 두며 모바일에서는 iframe 최소 높이를 낮춘다.
+  - Evidence: `src/content/projects/upstage-harness-engineering-skillthon.md`, `src/styles/global.css`; `npm run check`, `npm run build`, 정적 HTML 기본 접힘·iframe 내부 배치와 로컬 HTTP 200 확인.
+
+- `decision:finance-official-title-and-hero-poster`
+  - Created: 2026-08-31T17:06+09:00
+  - Updated: 2026-08-31T17:06+09:00
+  - Status: active
+  - Content: 금융 AI 상세 페이지의 메인 제목은 공식 대회명 `2026 금융 AI Challenge`를 사용하고, 메인 이미지는 사용자가 지정한 원본 대회 모집 포스터를 사용한다. 버팀AI 서비스 화면은 본문 프로젝트 자료로 유지한다.
+  - Evidence: `2026 금융 AI Challenge - 버팀AI/2026 금융 AI Challenge 포스터.jpg`, `public/projects/2026-finance-ai-challenge/images/competition-poster.jpg`, `src/content/projects/2026-finance-ai-challenge-buteomai.md`.
+
+- `decision:finance-home-thumbnail`
+  - Created: 2026-08-31T17:08+09:00
+  - Updated: 2026-08-31T17:08+09:00
+  - Status: active
+  - Content: 금융 AI 프로젝트의 홈 및 프로젝트 목록 썸네일은 사용자가 지정한 `13주 현금 비교` 그래프를 사용한다.
+  - Evidence: `public/projects/2026-finance-ai-challenge/images/05-cashflow-comparison.png`, `src/content/projects/2026-finance-ai-challenge-buteomai.md`; 홈 HTML 경로와 이미지 HTTP 200 확인.
+
+- `decision:finance-offline-demo`
+  - Created: 2026-08-31T18:34+09:00
+  - Updated: 2026-08-31T18:34+09:00
+  - Status: active
+  - Content: 금융 AI 포트폴리오의 실제 서비스 링크는 제거하고 사용자가 제공한 단일 HTML 오프라인 데모를 새 창 링크와 iframe으로 제공한다. 데모는 저장된 고정 데이터만 사용하며 모델 실행, 외부 AI, API와 외부 네트워크 연결이 없음을 명시한다.
+  - Evidence: `2026 금융 AI Challenge - 버팀AI/index.html`, `public/projects/2026-finance-ai-challenge/demo/index.html`, `src/content/projects/2026-finance-ai-challenge-buteomai.md`; 원본·공개·빌드 SHA-256 일치, `connect-src 'none'`, 로컬 페이지와 `/demo/index.html` HTTP 200 확인.
+
+- `decision:finance-draft-home-preservation`
+  - Created: 2026-08-31T14:34+09:00
+  - Updated: 2026-08-31T15:09+09:00
+  - Status: active
+  - Content: 버팀AI 금융 AI 프로젝트는 준비된 Markdown 근거만 사용한 상세 비교 시안으로 공개하되 확정본으로 간주하지 않는다. `featured: false`, `homeRecent: false`로 두어 홈 최근 업로드와 대표 프로젝트를 날씨 빅데이터로 유지한다.
+  - Evidence: `src/content/projects/2026-finance-ai-challenge-buteomai.md`, `public/projects/2026-finance-ai-challenge/`, `src/content.config.ts`, `src/pages/index.astro`, `dist/index.html`; `npm run check`, `npm run build`, 정적 홈 노출 검사 통과.
+
+- `decision:resume-portfolio-learning-note`
+  - Created: 2026-09-01T20:30+09:00
+  - Updated: 2026-09-01T20:30+09:00
+  - Status: active
+  - Content: 루트의 `자소서·포트폴리오 작성 강의 통합 정리.md`는 원본으로 보존하고, 공개 학습 노트는 `src/content/notes/resume-portfolio-writing-guide.md`에 별도로 둔다. 원본의 `15. 핵심 자료별 반영 내용`과 로컬 파일명·경로·링크는 공개 페이지에 포함하지 않는다.
+  - Evidence: 원본 776줄 유지, 공개 노트 746줄·로컬 자료 문자열 0건, `npm run check`, `npm run build`, 로컬 HTTP 200 확인.
+
 ## Working conventions
+
+- `convention:user-owned-browser-validation`
+  - Created: 2026-09-01T20:42+09:00
+  - Updated: 2026-09-01T20:42+09:00
+  - Status: active
+  - Content: 사용자가 직접 확인하겠다고 한 블로그 UI 작업에서는 Codex가 브라우저·스크린샷·다크/라이트·모바일 시각 검증이나 전체 빌드를 임의로 수행하지 않는다. 요청된 코드 수정과 최소 정적 오류 확인까지만 하고 실제 화면 검증은 사용자에게 남긴다.
+
+- `convention:media-analysis-on-demand`
+  - Created: 2026-08-31T14:32+09:00
+  - Updated: 2026-08-31T14:32+09:00
+  - Status: active
+  - Content: Codex 사용량을 아끼기 위해 포트폴리오 작업의 이미지·PDF 내용 분석과 브라우저 스크린샷 검사는 꼭 필요한 경우에만 수행하고, 가능한 경우 코드·정적 빌드·파일 존재 검사를 우선한다.
 
 - `convention:content-mathml-formulas`
   - Created: 2026-08-25T16:08+09:00
@@ -150,6 +288,24 @@
 
 ## Known issues and fixes
 
+- `issue:finance-content-depth`
+  - Created: 2026-08-31T14:42+09:00
+  - Updated: 2026-08-31T15:09+09:00
+  - Status: resolved
+  - Symptom: 버팀AI 초안은 문제와 서비스 흐름이 명확하지만 날씨 콘테스트 페이지와 비교하면 문제 근거, 금융 계산 설계, 고정 가상 사례의 수치 해석, 상세 역할과 모델 검증 근거가 충분히 이어지지 않는다.
+  - Cause: 첫 작성 범위를 간략한 초안으로 제한하며 준비된 메인 원고 224줄과 계산·안전장치 상세 원고를 116줄로 축약했기 때문이다.
+  - Fix: 준비 원고의 역할, 문제 근거, 금융 계산 설계, 고정 가상 사례, 서비스 흐름, 9종 데이터, 모델 경계, AI 안전장치와 실패 대응을 역피라미드 순서로 복원해 10개 대단락·18개 세부 단락의 상세 비교 시안으로 확장했다. 근거가 없는 모델 성능 수치는 검증 한계로 명시했다.
+  - Evidence: `src/content/projects/2026-finance-ai-challenge-buteomai.md`, `src/layouts/ProjectLayout.astro`, `src/styles/global.css`; 7개 figure·89개 표 행·공개 에셋 누락 0건, `npm run check`, `npm run build`, 홈 노출 정적 검사 통과. 이미지·PDF 내용 분석은 수행하지 않음.
+
+- `issue:upstage-content-depth`
+  - Created: 2026-08-31T14:41+09:00
+  - Updated: 2026-08-31T15:07+09:00
+  - Status: resolved
+  - Symptom: 업스테이지 프로젝트 초안은 문제, 4개 Skill, 실행 수치, 산출물과 회고의 기본 흐름은 갖췄지만 날씨 콘테스트 페이지와 비교하면 담당 역할, 핵심 질문, 데이터 설계, 실제 분석 결과, 설계 판단과 한계가 충분히 연결되지 않는다.
+  - Cause: 첫 작성 범위를 간략한 공개 초안으로 제한하며 준비된 302줄 장문 원고에서 82줄만 추렸기 때문이다.
+  - Fix: 준비 원고의 `담당 역할`, `대회 정보`, `최종 산출물`, `핵심 질문`, `Solar와 Python 역할 분리`, `승인 게이트`, `데이터 설계`, `분석 결과`, `기술적 성공과 질문 충족도 분리`를 역피라미드 순서로 선별 복원하고 10개 대단락·11개 세부 단락의 상세 비교 시안으로 확장했다.
+  - Evidence: `src/content/projects/upstage-harness-engineering-skillthon.md`, `src/layouts/ProjectLayout.astro`, `src/styles/global.css`; 7개 figure·10개 표·공개 에셋 누락 0건, `npm run check`, `npm run build`, 홈 노출 정적 검사 통과. 이미지·PDF 내용 분석은 수행하지 않음.
+
 - `issue:markdown-latex-npm-lock`
   - Created: 2026-08-25T15:49+09:00
   - Updated: 2026-08-25T16:08+09:00
@@ -186,12 +342,39 @@
   - Fix: 24시간 후 상태를 재확인하고 같은 오류가 지속될 때만 사이트맵을 삭제 후 `sitemap.xml`으로 다시 제출한다.
   - Evidence: 2026-08-14 공개 `https://max-ji64.github.io/sitemap.xml` 및 Googlebot User-Agent 요청이 HTTP 200과 XML urlset을 반환했고, `robots.txt`가 동일 사이트맵을 선언했다.
 
+- `issue:thumbnail-circle-overlay`
+  - Created: 2026-08-31T16:42+09:00
+  - Updated: 2026-08-31T16:54+09:00
+  - Status: resolved
+  - Symptom: 홈의 버팀AI와 업스테이지 프로젝트 카드 썸네일 실제 이미지 위에 큰 반투명 원 두 개가 겹쳐 보인다.
+  - Cause: 공통 `.content-thumbnail::before`와 `::after` 원형 장식이 실제 `<img>`가 있는 썸네일에도 조건 없이 렌더링된다.
+  - Fix: 실제 이미지가 있으면 `content-thumbnail--has-image` 클래스를 붙이고 원형 의사 요소 선택자에서 제외해, 장식을 이미지 없는 fallback에만 유지했다.
+  - Evidence: `src/components/ContentThumbnail.astro`, `src/styles/global.css`; `npm run check`, `npm run build`, 개발 서버 HTTP 200과 생성 HTML·CSS 선택자 확인 통과. 최종 시각 확인은 사용자 소유.
+
+- `issue:astro-dev-persistence`
+  - Created: 2026-08-31T16:46+09:00
+  - Updated: 2026-08-31T16:46+09:00
+  - Status: resolved
+  - Symptom: HTTP 200을 확인했던 편집용 Astro 서버가 다음 요청 시 종료되어 4321 연결이 거부됐다.
+  - Cause: Astro 7.2.1이 Codex 에이전트 환경을 감지해 개발 서버를 자동 백그라운드화했고, 해당 프로세스가 작업 수명 동안 유지되지 않았다.
+  - Fix: `ASTRO_DEV_BACKGROUND`를 비어 있지 않은 값으로 설정해 자동 감지를 끄고 `npm run dev -- --host 127.0.0.1 --port 4321 --strictPort`를 지속 실행 세션에서 전경 실행한다.
+  - Evidence: `node_modules/astro/dist/cli/dev/index.js:86-117`; 전경 서버의 `watching for file changes`, 로컬 `/` HTTP 200 확인.
+
+- `issue:upstage-poster-viewport-scale`
+  - Created: 2026-09-01T19:02+09:00
+  - Updated: 2026-09-01T19:06+09:00
+  - Status: resolved
+  - Symptom: 업스테이지 프로젝트 본문의 일곱 figure 이미지가 반응형 본문에서 지나치게 커지거나 원본 비율과 다르게 늘어나 보였다.
+  - Cause: 이미지 너비는 `max-width: 100%`로 줄였지만 HTML의 고정 width·height 속성에 대응하는 `height: auto`와 화면 높이 제한이 모든 figure에 적용되지 않았다.
+  - Fix: 첫 포스터는 사용자가 조절 가능한 인라인 크기 규칙을 유지하고, 나머지 여섯 figure에는 공통 클래스를 적용해 `height: auto`, `object-fit: contain`, `max-height: min(78dvh, 760px)`로 비율과 크기를 보정했다.
+  - Evidence: `src/content/projects/upstage-harness-engineering-skillthon.md`, `src/styles/global.css`; 공통 클래스 6개, `git diff --check`, 로컬 상세 페이지 HTTP 200 확인. 이미지 분석은 수행하지 않았고 시각 점검은 사용자 소유.
+
 ## Current handoff
 
 - `handoff:current`
-  - Updated: 2026-08-25T16:08+09:00
-  - Current state: 2026 날씨 빅데이터 콘테스트 페이지 수정은 완료됐다. 수식은 MathML, 이미지는 figure의 width 비율과 가운데 정렬 규칙을 사용한다.
-  - Next step: 다음 콘텐츠 작업부터 공통 작성 가이드와 템플릿의 MathML·figure 규칙을 적용한다.
+  - Updated: 2026-09-01T22:30+09:00
+  - Current state: 편집용 Astro 서버가 `http://127.0.0.1:4321/`에서 실행 중이다. 프로젝트 전체 목록의 수상 프로젝트 제목 정렬을 분리했고, 홈 경험 카드 기간 글자를 프로젝트 카드 기간과 같은 크기와 굵기로 맞췄다.
+  - Next step: 사용자가 프로젝트 목록 제목 위치와 홈 경험 기간 글자 모양을 직접 확인한다. 요청에 따라 브라우저·시각 검증과 전체 빌드는 수행하지 않았다.
   - Blockers: 없음.
 
 ## Session log
@@ -230,5 +413,75 @@
   - Focus: 날씨 콘테스트 페이지의 `## 핵심 EDA` 이하를 실제 발표 내용에 맞춰 재구성하기 위한 범위와 순서 설계.
   - Updated keys: `decision:markdown-latex-rendering`, `convention:weather-no-automatic-astro-validation`, `convention:weather-presentation-bounded-rewrite`, `convention:weather-presentation-order-approval`, `convention:weather-prose-humanizer`, `convention:content-strong-emphasis`, `convention:content-figure-sizing`, `convention:content-mathml-formulas`, `convention:weather-page-complete`, `issue:weather-bold-marker-rendering`, `issue:astro-dev-startup`, `issue:markdown-latex-npm-lock`, `handoff:current`.
   - Summary: 날씨 콘테스트 포트폴리오의 EDA·모델 결과·이미지 표시를 보강했다. LaTeX 연동은 npm 잠금 파일 문제로 폐기하고 배포가 확인된 MathML로 대체했으며, 공통 작성 규칙에 반영한 뒤 사용자의 확인에 따라 페이지 수정을 완료했다.
+
+- `session:20260831-1426`
+  - Started: 2026-08-31T14:26+09:00
+  - Last activity: 2026-08-31T15:09+09:00
+  - Focus: 버팀AI 금융 AI 프로젝트 페이지의 초안 작성, 날씨 페이지 기준 검토와 상세 비교 시안 확장.
+  - Updated keys: `decision:finance-draft-home-preservation`, `issue:finance-content-depth`, `handoff:current`.
+  - Summary: 준비된 세 Markdown에서 역할, 문제 근거, 무대응 기준선, 정책 사건 변환, 고정 사례 수치, 서비스 흐름, 데이터·모델 경계, AI 안전장치와 한계를 복원해 상세 비교 시안으로 확장했다. 근거 없는 모델 성능은 추가하지 않았고 이미지·PDF 내용 분석 없이 에셋, Astro 검사·빌드와 홈 노출을 확인했다. 시안은 사용자 미확정 상태다.
+
+- `session:20260831-1432`
+  - Started: 2026-08-31T14:32+09:00
+  - Last activity: 2026-08-31T15:07+09:00
+  - Focus: 업스테이지 프로젝트의 간략한 초안 작성, 날씨 페이지 기준 검토와 상세 비교 시안 확장.
+  - Updated keys: `decision:upstage-draft-home-preservation`, `convention:media-analysis-on-demand`, `issue:upstage-content-depth`, `handoff:current`.
+  - Summary: 준비된 장문 Markdown의 역할, 산출물, 핵심 질문, Skill 설계 판단, 데이터 구성, Timely QA, 실제 분석 결과와 성공·한계를 역피라미드 순서로 복원해 상세 비교 시안으로 확장했다. `humanizer` 기준으로 홍보성 문장을 줄였고 이미지·PDF 내용 분석 없이 공개 에셋, Astro 검사·빌드와 홈 노출을 확인했다. 시안은 사용자 미확정 상태다.
+
+- `session:20260831-1637`
+  - Started: 2026-08-31T16:37+09:00
+  - Last activity: 2026-08-31T18:34+09:00
+  - Focus: 블로그 이미지·제목 정리와 금융 AI 오프라인 데모 연결.
+  - Updated keys: `decision:upstage-official-title-and-hero-poster`, `decision:finance-official-title-and-hero-poster`, `decision:finance-home-thumbnail`, `decision:finance-offline-demo`, `issue:thumbnail-circle-overlay`, `issue:astro-dev-persistence`, `handoff:current`.
+  - Summary: 두 프로젝트의 공식 제목과 포스터, 금융 썸네일을 정리하고 서버를 복구했다. 금융 AI 실제 서비스 URL은 제거하고 원본 HTML을 그대로 복사한 오프라인 데모를 링크와 iframe으로 연결했으며, 무모델·무외부 AI·무네트워크 범위와 검사·빌드·HTTP 응답을 확인했다. 최종 시각 확인은 사용자에게 남겼다.
+
+- `session:20260901-1855`
+  - Started: 2026-09-01T18:55+09:00
+  - Last activity: 2026-09-01T22:30+09:00
+  - Focus: 블로그 편집용 서버, 업스테이지 미디어, 홈·아카이브·헤더 탐색, 표 가독성과 경험 날짜 연동 개선.
+  - Updated keys: `handoff:current`, `issue:upstage-poster-viewport-scale`, `decision:upstage-video-chapters`, `decision:upstage-dashboard-toggle`, `decision:home-project-carousel-discoverability`, `decision:ai-top-100-experience-record`, `decision:ai-top-100-prompt-disclosures`, `decision:project-archive-list-layout`, `decision:global-prose-table-ui`, `decision:header-primary-navigation`, `convention:user-owned-browser-validation`.
+  - Summary: 동일 작업공간의 병행 작업을 보존하며 업스테이지 미디어, 홈 탐색·정렬, 전체 프로젝트 목록과 전역 표 UI를 수정했다. 홈 경험 영역을 세로 한 항목 이동으로 바꾸고 경험 날짜를 공통 포맷으로 통합한 뒤, 공통 헤더 메뉴를 홈·프로젝트·경험·학습 노트 순서로 변경했다. AI TOP 100의 두 프롬프트 전문은 원본 연동형 기본 접힘 토글로 추가하고 실제 수능 적용 예시는 유지했다. 프로젝트 전체 목록에서는 수상 정보가 제목을 아래로 미는 정렬을 분리하고, 홈 경험 기간 글자도 프로젝트 카드와 같은 크기·굵기로 통일했다. 최근 변경은 사용자 지시에 따라 코드만 반영하고 브라우저·시각 검증과 전체 빌드를 생략했다.
+
+- `session:20260901-1856`
+  - Started: 2026-09-01T18:56+09:00
+  - Last activity: 2026-09-01T19:07+09:00
+  - Focus: 본선 발표 질의응답을 날씨 빅데이터 콘테스트 프로젝트 페이지에 통합하고 Q/A 시각 구분을 보강.
+  - Updated keys: `decision:weather-presentation-qa-appendix`, `handoff:current`.
+  - Summary: 원문 질문 5개와 활용 한계를 페이지 끝에 옮기고 모든 질문·답변을 Q/A 블록으로 전환했다. 질문은 하늘색, 답변은 회청색으로 구분하고 모바일 규칙을 추가했으며 13개 블록 구조 검사 후 사용자가 실제 적용 상태를 확인했다.
+
+- `session:20260901-1915`
+  - Started: 2026-09-01T19:15+09:00
+  - Last activity: 2026-09-01T19:15+09:00
+  - Focus: AI TOP 100 CAMPUS 본선 진출 경험 페이지 작성과 홈 최근 업로드 보존.
+  - Updated keys: `decision:ai-top-100-experience-record`, `decision:recent-content-by-publication`, `handoff:current`.
+  - Summary: 근거 Markdown에서 역할, 계획·실행 분리, 도구 책임, 5단계 검증, 시간 제약과 한계를 선별해 경험 페이지를 작성했다. 지정 사진은 SHA-256 동일 사본으로 공개하고, 경험 `homeRecent` 계약을 추가해 빌드 홈의 최근 업로드가 날씨 콘테스트로 유지됨을 확인했다.
+
+- `session:20260901-1924`
+  - Started: 2026-09-01T19:24+09:00
+  - Last activity: 2026-09-01T19:33+09:00
+  - Focus: 카카오테크 부트캠프 MOLIP 프로젝트 페이지 작성과 홈 최근 업로드 보존.
+  - Updated keys: `decision:molip-project-record`, `decision:recent-content-by-publication`, `handoff:current`.
+  - Summary: 원고에서 직접 구현한 5단계 스케줄링, EMA 개인화, 주간 레포트, 벡터 검색, SSE 채팅과 관측성을 선별해 상세 프로젝트 페이지로 구성했다. 서비스 화면을 대표 이미지로 쓰고 구현 범위가 다른 MCP 자동 호출은 주장하지 않았으며, `homeRecent: false`, Astro 검사·빌드와 데스크톱 양 테마 및 모바일 가로 넘침 검증을 통과했다.
+
+- `session:20260901-1935`
+  - Started: 2026-09-01T19:35+09:00
+  - Last activity: 2026-09-01T19:48+09:00
+  - Focus: 성남시 공공데이터 공모전 프로젝트 페이지 작성, 공개 PDF 개인정보 제거와 비식별 대표 사진 적용.
+  - Updated keys: `decision:seongnam-public-data-project-record`, `decision:recent-content-by-publication`, `handoff:current`.
+  - Summary: 원고·발표·분석보고서에서 데이터 수집, EFA, K-means++, 시장 선별 규칙과 정책 범위를 교차 확인해 상세 페이지를 작성했다. 원본은 보존하고 공개 보고서의 앞 4페이지를 제거했으며 사용자가 모자이크한 시상식 사진을 대표 이미지로 적용했다. Astro 검사·빌드와 최근 업로드 고정을 확인했고 브라우저 시각 검증은 사용량 제한으로 수행하지 못했다.
+
+- `session:20260901-2016`
+  - Started: 2026-09-01T20:16+09:00
+  - Last activity: 2026-09-01T20:22+09:00
+  - Focus: AI TOP 100 CAMPUS 경험 페이지를 원문 프롬프트와 적용 예시 중심으로 전면 재작성.
+  - Updated keys: `decision:ai-top-100-experience-record`, `handoff:current`.
+  - Summary: 계획 수립과 문제 실행 프롬프트의 파일 계약, 입력별 전처리, 3분·5분·30초 중단 기준, 세션 전환과 수능 네 문항 적용 예시를 복원했다. 미검증 정확도·서비스 구현 주장은 제외하고 `humanizer` 기준으로 문장을 정리했으며 Astro 검사·빌드를 통과했다.
+
+- `session:20260901-2027`
+  - Started: 2026-09-01T20:27+09:00
+  - Last activity: 2026-09-01T20:30+09:00
+  - Focus: 자소서·포트폴리오 통합 강의 원고를 공개 학습 노트 페이지로 구성.
+  - Updated keys: `decision:resume-portfolio-learning-note`, `handoff:current`.
+  - Summary: 원본의 직무 분석, 경험 DB, 작성 프레임, AI 검증, 포트폴리오·면접 연결, 실행안과 체크리스트를 보존해 공개 노트를 만들었다. 사용자의 지시에 따라 로컬 자료 목록과 경로는 모두 제외했으며 Astro 검사·빌드와 HTTP 200을 확인했다.
 
 ## Session archive

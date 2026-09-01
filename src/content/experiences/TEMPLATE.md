@@ -9,6 +9,7 @@ startedAt: 2026-01-01
 endedAt: 2026-02-01
 roles: ["역할 또는 키워드"]
 keywords: ["데이터 분석", "활동 분야", "핵심 역량"]
+# homeRecent: false # 홈의 최근 업로드 후보에서 제외할 때만 추가합니다.
 draft: true
 ---
 

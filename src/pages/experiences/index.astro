@@ -2,12 +2,12 @@
 import { getCollection } from "astro:content";
 import ContentThumbnail from "../../components/ContentThumbnail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatArchivePeriod } from "../../utils/formatDate";
 
 const experiences = (await getCollection("experiences", ({ data }) => !data.draft)).sort(
   (left, right) => right.data.startedAt.valueOf() - left.data.startedAt.valueOf(),
 );
 
-const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
 ---
 
 <BaseLayout title="경험 & 자격증 | Max.JI의 빅데이터 프로젝트 아카이브" description="데이터 분석과 프로젝트 과정에서 쌓은 활동, 경험, 자격증을 기록합니다.">
@@ -20,7 +20,7 @@ const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "nu
             <a href={`/experiences/${experience.id}/`}>
               <ContentThumbnail src={experience.data.thumbnail} alt={`${experience.data.title} 대표 이미지`} label={experience.data.kind} className="experience-list-thumbnail" />
               <div><p class="project-status">{experience.data.kind}</p><h2>{experience.data.title}</h2><p>{experience.data.description}</p></div>
-              <div class="experience-list-meta"><span>{experience.data.organization}</span><time datetime={experience.data.startedAt.toISOString()}>{formatMonth(experience.data.startedAt)} - {experience.data.endedAt ? formatMonth(experience.data.endedAt) : "현재"}</time><span aria-hidden="true">→</span></div>
+              <div class="experience-list-meta"><span>{experience.data.organization}</span><time datetime={experience.data.startedAt.toISOString()}>{formatArchivePeriod(experience.data.startedAt, experience.data.endedAt)}</time><span aria-hidden="true">→</span></div>
             </a>
           ))}
         </div>

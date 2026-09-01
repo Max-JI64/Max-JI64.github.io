@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { formatArchivePeriod } from "../utils/formatDate";
 
 const { entry, Content } = Astro.props;
-const formatMonth = (date: Date) => date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
-const period = `${formatMonth(entry.data.startedAt)} - ${entry.data.endedAt ? formatMonth(entry.data.endedAt) : "현재"}`;
+const period = formatArchivePeriod(entry.data.startedAt, entry.data.endedAt);
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Article",

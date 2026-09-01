@@ -39,6 +39,7 @@ const projects = defineCollection({
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
     featured: z.boolean().default(false),
+    homeRecent: z.boolean().default(true),
     draft: z.boolean().default(false),
     repository: z.url().optional(),
     demo: z.url().optional(),
@@ -62,6 +63,7 @@ const experiences = defineCollection({
     roles: z.array(z.string()).default([]),
     keywords: z.array(z.string()).max(8).default([]),
     thumbnail: z.string().optional(),
+    homeRecent: z.boolean().default(true),
     draft: z.boolean().default(false),
   }),
 });

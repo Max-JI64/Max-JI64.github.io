@@ -1,0 +1,132 @@
+---
+import "../../../../styles/global.css";
+import planningSource from "../../../../../AI TOP 100 대회 본선 진출/AI TOP 100 분석 계획 수립 프롬프트.md?raw";
+import executionSource from "../../../../../AI TOP 100 대회 본선 진출/AI TOP 100 문제 풀이 지시 프롬프트.md?raw";
+
+type PromptKind = "planning" | "execution";
+
+interface Props {
+  kind: PromptKind;
+}
+
+export function getStaticPaths() {
+  return [
+    { params: { kind: "planning" }, props: { kind: "planning" } },
+    { params: { kind: "execution" }, props: { kind: "execution" } },
+  ];
+}
+
+const prompts = {
+  planning: {
+    title: "분석 계획 수립 프롬프트 전문",
+    source: planningSource,
+  },
+  execution: {
+    title: "문제 풀이 지시 프롬프트 전문",
+    source: executionSource,
+  },
+} satisfies Record<PromptKind, { title: string; source: string }>;
+
+const { kind } = Astro.props;
+const prompt = prompts[kind];
+
+function extractPromptSource(source: string) {
+  const lines = source.replaceAll("\r\n", "\n").split("\n");
+  const firstFence = lines.findIndex((line) => line.trim() === "```markdown");
+  const lastFence = lines.findLastIndex((line) => line.trim() === "```");
+  const promptLines = firstFence >= 0 && lastFence > firstFence
+    ? lines.slice(firstFence + 1, lastFence)
+    : lines;
+
+  return promptLines.map((line) => line.startsWith("    ") ? line.slice(4) : line).join("\n").trim();
+}
+
+const promptText = extractPromptSource(prompt.source);
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+      window.addEventListener("storage", (event) => {
+        if (event.key === "theme") {
+          document.documentElement.dataset.theme = event.newValue === "light" ? "light" : "dark";
+        }
+      });
+    </script>
+    <title>{prompt.title}</title>
+  </head>
+  <body class="prompt-source-page">
+    <main>
+      <header>
+        <p>AI TOP 100 CAMPUS</p>
+        <h1>{prompt.title}</h1>
+        <span>원본 파일의 프롬프트 영역을 그대로 표시합니다.</span>
+      </header>
+      <pre><code>{promptText}</code></pre>
+    </main>
+  </body>
+</html>
+
+<style>
+  .prompt-source-page {
+    min-width: 0;
+    background: var(--surface-muted);
+  }
+
+  .prompt-source-page main {
+    width: min(100%, 1040px);
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 42px);
+  }
+
+  .prompt-source-page header {
+    margin-bottom: 24px;
+  }
+
+  .prompt-source-page header p {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 850;
+  }
+
+  .prompt-source-page h1 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(22px, 4vw, 34px);
+    letter-spacing: -0.045em;
+    line-height: 1.2;
+  }
+
+  .prompt-source-page header span {
+    display: block;
+    margin-top: 10px;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  .prompt-source-page pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: clamp(18px, 3vw, 28px);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .prompt-source-page code {
+    padding: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+</style>

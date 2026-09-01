@@ -4,8 +4,15 @@ import AwardTrophy from "../../components/AwardTrophy.astro";
 import ContentThumbnail from "../../components/ContentThumbnail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
-  (left, right) => right.data.publishedAt.valueOf() - left.data.publishedAt.valueOf(),
+const getPeriodEndValue = (period: string) => {
+  const dates = [...period.matchAll(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/g)];
+  const latest = dates.at(-1);
+  return latest ? Date.UTC(Number(latest[1]), Number(latest[2]) - 1, Number(latest[3])) : Number.NEGATIVE_INFINITY;
+};
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft)).sort((left, right) =>
+  getPeriodEndValue(right.data.period) - getPeriodEndValue(left.data.period)
+  || right.data.publishedAt.valueOf() - left.data.publishedAt.valueOf()
 );
 ---
 
@@ -14,12 +21,18 @@ const projects = (await getCollection("projects", ({ data }) => !data.draft)).so
     <header class="page-intro"><p class="kicker">Projects</p><h1 id="page-title">프로젝트</h1><p>문제 정의, 데이터, 분석 과정, 결과와 회고까지 실제 경험의 맥락을 기록합니다.</p></header>
     {
       projects.length > 0 ? (
-        <div class="projects-grid">
-          {projects.map((project, index) => (
-            <a class:list={["project-tile", { "project-tile-featured": project.data.featured || (!projects.some((entry) => entry.data.featured) && index === 0) }]} href={`/projects/${project.id}/`}>
-              <ContentThumbnail src={project.data.thumbnail} alt={`${project.data.title} 대표 이미지`} label={project.data.category || "PROJECT"} className="project-tile-thumbnail" />
-              <div class="project-tile-copy"><div>{project.data.category && <p class="project-status">{project.data.category}</p>}<h2>{project.data.title}</h2>{project.data.description && <p>{project.data.description}</p>}</div><div class="project-tile-footer"><time>기간 {project.data.period}</time>{project.data.award && <span class="project-award-tag">{project.data.award} 수상</span>}{project.data.role && <span>{project.data.role}</span>}<span aria-hidden="true">→</span></div></div>
-              {project.data.award && <AwardTrophy award={project.data.award} variant="tile" />}
+        <div class="experience-list project-archive-list">
+          {projects.map((project) => (
+            <a href={`/projects/${project.id}/`}>
+              <ContentThumbnail src={project.data.thumbnail} alt={`${project.data.title} 대표 이미지`} label={project.data.category || "PROJECT"} className="experience-list-thumbnail project-archive-thumbnail" />
+              <div class="project-archive-copy">{project.data.category && <p class="project-status">{project.data.category}</p>}<h2>{project.data.title}</h2>{project.data.description && <p>{project.data.description}</p>}</div>
+              <div class="experience-list-meta project-archive-meta">
+                <time>기간 {project.data.period}</time>
+                {project.data.role && <span>{project.data.role}</span>}
+                {project.data.award && <span class="project-award-tag">{project.data.award} 수상</span>}
+                {project.data.award && <AwardTrophy award={project.data.award} variant="list" />}
+                <span aria-hidden="true">→</span>
+              </div>
             </a>
           ))}
         </div>

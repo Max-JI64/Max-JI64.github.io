@@ -2,7 +2,7 @@
 title: "2026 날씨 빅데이터 콘테스트 - 우수상 수상"
 description: "기상·공간 데이터를 결합해 강원도 전신주 138만 개의 상대적 산불 취약도를 산출하고, 점검 우선순위를 대시보드로 구현한 프로젝트입니다."
 publishedAt: 2026-05-01
-updatedAt: 2026-08-13
+updatedAt: 2026-09-01
 category: "공모전"
 period: "2026. 05. 01. - 2026. 08. 05."
 award: "우수상(기상청장상)"
@@ -452,3 +452,131 @@ SHAP은 각 변수가 모델의 예측값에 얼마나 기여했는지 계산하
 점검 대상은 위험점수와 현장 여건을 함께 보고 정한다. 위험 전신주와 주변 구간에서는 가연물 제거, 수목 접촉 여부 확인, 예방 순찰 경로 설정과 취약지역 예찰을 우선할 수 있다. 산불이 집중된 계절과 시간대에 건조, 강풍, 강수 부족 조건이 나타난 지역을 먼저 살피는 방식이다.
 
 현재 대시보드는 대표 기상 시점에 따른 위험 변화를 보여준다. 향후 실시간 기상자료를 연결하면 시점별 위험도를 갱신하는 경보 체계로 확장할 수 있다.
+
+---
+
+## 본선 발표 질의응답
+
+발표 후 질의응답에서는 지역 구분의 모델 반영 여부, 캐나다 산불기상지수의 산출 방식, 전신주 점검 우선순위의 활용 범위와 한계를 설명했다.
+
+### 1. 지역 구분을 실제 모델에도 반영했는가?
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>EDA에서는 강원도를 영동 해안형, 영서 내륙형, 고지·산간형의 세 지역으로 구분했고, 지역에 따라 주요 변수가 다를 수 있다고 설명했다. 실제 모델 학습에도 이러한 지역 구분을 변수로 반영했는가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p>영동 해안형, 영서 내륙형, 고지·산간형으로 구분한 <strong>기후·지형 유형은 모델에도 반영</strong>했다. 다만 SHAP 분석 결과, 지역 유형 변수 자체의 영향력은 크지 않았다.</p>
+    <p>EDA에서 확인했듯 지역마다 날씨 분포는 달랐다. 이러한 지역별 차이는 지역 구분 변수 그 자체보다 <strong>날씨 변수, 공간 변수, 캐나다 산불기상지수 관련 변수</strong>에 반영돼 모델이 활용한 것으로 해석할 수 있다.</p>
+  </div>
+</div>
+
+### 2. 캐나다 산불기상지수는 어떻게 산출했으며, 강원도에 그대로 적용할 수 있는가?
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>캐나다 산불기상지수는 기존에 계산된 값을 가져온 것인가, 아니면 직접 계산한 것인가? 또한 캐나다와 강원도는 환경 특성이 다른데, 이 차이는 어떻게 고려했는가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p>캐나다 산불기상지수는 1987년 Van Wagner가 발표한 지수다. 외부에서 계산된 값을 그대로 가져온 것이 아니라, <strong>수집한 강원도 기상데이터를 이용해 직접 계산</strong>했다.</p>
+    <p>캐나다에서 개발된 지수를 강원도에 그대로 적용하는 데에는 한계가 있다고 판단했다. 따라서 이 지수만을 단독 기준으로 사용하지 않고 모델에 투입되는 <strong>파생변수</strong>로 활용했다. 강원도에서의 유효성은 EDA와 모델 검증을 통해 추가로 확인했다.</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="추가 질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>“파생변수로 활용했다”는 말은 지수 자체를 다른 형태로 변환했다는 뜻인가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="추가 답변">A</div>
+  <div class="weather-qa-copy">
+    <p>여기서 파생변수라는 표현은 지수를 다시 변형했다는 뜻이 아니라, <strong>수집한 기상데이터로 해당 지수를 직접 계산해 새 변수를 만들었다</strong>는 의미다.</p>
+  </div>
+</div>
+
+### 3. 산림 특성은 어떻게 반영했고, 모델의 위험점수는 대시보드의 점검 순위로 어떻게 연결했는가?
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>모델의 주요 요인으로 기상·공간 변수가 제시됐는데, 지역마다 산림 특성과 분포도 다를 수 있다. 이러한 산림 특성은 모델에 어떻게 반영했는가?</p>
+    <p>또한 발표에서는 모델의 포착 성능과 위험점수를 설명한 뒤 곧바로 전신주 위험도 대시보드를 제시했다. 모델의 위험점수가 실제 대시보드의 점검 우선순위로 이어지는 중간 과정은 무엇인가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p class="weather-qa-subtitle">산림 특성의 반영</p>
+    <p>기후·지형 유형을 구분해 모델에 넣었지만, 해당 변수의 영향력은 크지 않았다. 따라서 <strong>산림 특성 자체를 세밀하게 반영한 분석은 부족</strong>하다는 한계가 있다.</p>
+    <p>대신 생활권과 산림이 얼마나 가까운지를 나타내는 접근성 및 경계 관련 공간지표를 사용해, 산림과 시가지가 맞닿는 특성을 간접적으로 반영했다.</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p class="weather-qa-subtitle">모델에서 대시보드까지의 연결</p>
+    <p>제공받은 전신주별 위치정보에 각 위치와 시점에 해당하는 기상정보 등 모델 입력변수를 결합한 뒤, 학습된 모델로 각 전신주의 위험점수를 산출했다.</p>
+    <p>이 점수는 <strong>해당 전신주에서 산불이 발생할 절대확률</strong>이라기보다 어느 전신주를 먼저 점검해야 하는지 비교하기 위한 <strong>상대적 위험도</strong>다. 대시보드는 전신주를 위험점수가 높은 순서대로 나열해 점검 우선순위를 보여준다.</p>
+    <p>전신주 데이터에는 모델 학습데이터보다 정보가 적고, 실제 결과를 확인할 정답 데이터도 충분하지 않아 정확도에 한계가 있다. 그럼에도 동일한 모델 변수를 적용해 산출한 상대적 위험도를 이용하면 점검 순서를 정하는 참고자료로 활용할 수 있다고 판단했다.</p>
+    <p>대시보드에서는 선택한 기상조건에 따라 위험지역이 달라진다. 예를 들어 건조하거나 강풍이 부는 조건을 설정하면 위험도가 높은 전신주의 위치, 핀의 크기와 색상이 함께 바뀌어 해당 조건에서 우선 확인할 대상을 보여준다.</p>
+  </div>
+</div>
+
+### 4. 영동과 영서에서 중요하게 나타난 기상요인이 다른 이유는 무엇인가?
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>영동에서는 풍속의 영향이 크고 영서에서는 강수량의 영향이 크다고 설명했다. 이러한 결론은 어떤 분석 결과를 근거로 한 것인가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p>EDA 결과, <strong>영서에서는 산불 발생 시점의 강수량 결핍이 다른 지역보다 크게 나타났고</strong>, <strong>영동에서는 특히 겨울철 강풍의 차이가 크게 나타났다.</strong></p>
+    <p>강수량 결핍은 건조 상태로 해석할 수 있다. 캐나다 산불기상지수 분석에서도 영서 지역은 DMC와 BUI 등 누적 건조 상태와 관련된 변수에서 같은 경향을 보였다. 따라서 영서는 강수 부족과 누적 건조, 영동은 강풍의 영향이 상대적으로 중요하다고 해석했다.</p>
+  </div>
+</div>
+
+### 5. 점검 우선순위가 실제 현장 효율 향상으로 이어진다고 볼 수 있는가?
+
+<div class="weather-qa-block weather-qa-question">
+  <div class="weather-qa-mark" aria-label="질문">Q</div>
+  <div class="weather-qa-copy">
+    <p>위험 전신주의 점검 우선순위를 제시한다는 활용 방안은 다소 막연하게 느껴질 수 있다. 실제로 무엇을 점검할 수 있으며, 이 방식이 비용과 인력 운영에 얼마나 영향을 줄 수 있는가?</p>
+    <p>또한 사용한 데이터만으로 전신주의 실제 화재 발생확률이나 고장 가능성을 충분히 설명하기 어렵다. 점검을 하더라도 기상데이터나 현재의 전신주 상태를 직접 바꾸기는 어려운데, 이러한 활용상의 한계를 어떻게 보는가?</p>
+  </div>
+</div>
+
+<div class="weather-qa-block weather-qa-answer">
+  <div class="weather-qa-mark" aria-label="답변">A</div>
+  <div class="weather-qa-copy">
+    <p>모델이 정한 위험비율 또는 위험점수 상위 10%와 같은 기준으로 대상을 선별해 우선 대응하는 방식은 무작위로 점검하는 것보다 합리적이라고 판단했다. 위험순위를 근거로 점검 대상을 정할 수 있다는 점에 의의가 있다.</p>
+    <p>다만 이 방식으로 <strong>예산을 얼마나 절감할 수 있는지, 인력을 얼마나 최적화할 수 있는지까지는 계산하지 못했다.</strong> 따라서 현 단계에서 비용 절감이나 운영 효율의 크기를 수치로 확정할 수는 없다.</p>
+    <p>또한 연구에는 <strong>전신주 자체의 화재 발생 또는 고장 이력 데이터가 없었다.</strong> 그러므로 모델의 결과는 전신주 자체의 고장·발화 확률이 아니다. 전신주 주변이 산불 발생에 얼마나 취약한 환경인지를 나타내는 상대적 위험도로 보고, 이를 바탕으로 점검 우선순위를 제안한 것이다.</p>
+  </div>
+</div>
+
+### 질의응답 핵심 정리
+
+- 지역 유형은 모델에 포함했지만, 유형 변수 자체의 영향력은 크지 않았다.
+- 캐나다 산불기상지수는 강원도 기상데이터로 직접 계산해 파생변수로 활용했다.
+- 대시보드의 위험점수는 절대적인 산불 발생확률이 아니라 전신주 간 상대적 점검 우선순위다.
+- 영서는 강수 부족과 누적 건조, 영동은 겨울철 강풍의 영향이 상대적으로 크게 나타났다.
+- 비용·인력 절감 효과는 수치로 검증하지 못했으며, 전신주 자체의 화재·고장 이력도 없다는 한계가 있다.

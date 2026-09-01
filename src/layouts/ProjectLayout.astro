@@ -5,7 +5,11 @@ import ContentToc from "../components/ContentToc.astro";
 const { entry, Content, headings = [] } = Astro.props;
 const hasHeroImage = Boolean(entry.data.heroImage);
 const isWeatherProject = entry.id === "2026-weather-big-data-contest";
-const tocHeadings = isWeatherProject
+const isFinanceProject = entry.id === "2026-finance-ai-challenge-buteomai";
+const isUpstageProject = entry.id === "upstage-harness-engineering-skillthon";
+const isMolipProject = entry.id === "molip-ai-daily-planner";
+const isSeongnamProject = entry.id === "2025-seongnam-public-data-contest";
+const tocHeadings = isWeatherProject || isFinanceProject || isUpstageProject || isMolipProject || isSeongnamProject
   ? headings.filter((heading: { depth: number }) => heading.depth === 2)
   : [];
 const structuredData = {
@@ -22,7 +26,7 @@ const structuredData = {
 ---
 
 <BaseLayout title={`${entry.data.title} | Max.JI의 빅데이터 프로젝트 아카이브`} description={entry.data.description} structuredData={structuredData}>
-  <article id="content-top" class:list={["content-page", "shell", { "weather-project-page": isWeatherProject, "has-content-toc": tocHeadings.length > 0 }]}>
+  <article id="content-top" class:list={["content-page", "shell", { "weather-project-page": isWeatherProject, "finance-project-page": isFinanceProject, "upstage-project-page": isUpstageProject, "molip-project-page": isMolipProject, "seongnam-project-page": isSeongnamProject, "has-content-toc": tocHeadings.length > 0 }]}>
     <header class:list={["content-hero", "content-hero-card", { "project-hero-with-media": hasHeroImage }]}>
       <div class="project-hero-copy">
         <a class="back-link" href="/projects/">← 프로젝트</a>

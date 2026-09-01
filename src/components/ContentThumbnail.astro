@@ -9,7 +9,7 @@ interface Props {
 const { src, alt, label, className } = Astro.props;
 ---
 
-<div class:list={["content-thumbnail", className]}>
+<div class:list={["content-thumbnail", { "content-thumbnail--has-image": Boolean(src) }, className]}>
   {
     src ? (
       <img src={src} alt={alt} loading="lazy" />
